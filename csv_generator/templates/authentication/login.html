@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans 'Log in page' %}{% endblock %}
+
+{% block header %}
+    <title>LoginView</title>
+{% endblock header %}
+
+{% block main %}
+    <form method="POST">{% csrf_token %}
+
+        <!-- form variable -->
+        {{ form.as_p }}
+
+        <input type="submit" name="sumbit">
+    </form>
+{% endblock main %}

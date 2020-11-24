@@ -1,5 +1,7 @@
 from django.db import models
 
+from schemas import settings
+
 
 class Schema(models.Model):
     COMMA = ','
@@ -21,6 +23,8 @@ class Schema(models.Model):
         max_length=100,
         verbose_name='name'
     )
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='user')
     column_separator = models.CharField(
         max_length=1,
         choices=COLUMN_SEPARATOR,
@@ -33,3 +37,4 @@ class Schema(models.Model):
         verbose_name='string character'
     )
     schema_column = models.JSONField(null=False, blank=True, default=dict)
+
