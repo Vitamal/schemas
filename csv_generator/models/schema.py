@@ -1,6 +1,6 @@
 from django.db import models
 
-from schemas import settings
+from schemas.project import settingsproxy
 
 
 class Schema(models.Model):
@@ -23,7 +23,7 @@ class Schema(models.Model):
         max_length=100,
         verbose_name='name'
     )
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+    user = models.ForeignKey(to=settingsproxy.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='user')
     column_separator = models.CharField(
         max_length=1,

@@ -1,0 +1,29 @@
+*.o
+*.pyc
+*.pyo
+*.tmp
+.*.swp
+.*.swo
+*~
+.DS_Store
+*.sqlite
+*.sqlite3
+*.bak
+*.egg-info/
+cscope.out
+Session.vim
+\#*#
+.#*
+dbdev_tempdata/
+
+.ipynb_checkpoints/
+*.ipynb
+
+node_modules/
+
+# Ignore pycharm files
+.idea/
+
+# ignore vscode files
+.vscode/
+develop-environment.json
