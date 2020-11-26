@@ -29,8 +29,8 @@ if DJANGOENV == 'develop':  # Used for local development
     from schemas.project.develop.develop_settings import *
 elif DJANGOENV == 'test':  # Used when running the Django tests locally
     from schemas.project.develop.test_settings import *
-# elif DJANGOENV == 'staging':  # Used in staging
-#     from schemas.project.production.staging_settings import *
+elif DJANGOENV == 'staging':  # Used in staging
+    from schemas.project.production.staging_settings import *
 elif DJANGOENV == 'production':  # Used in production
     from schemas.project.production.production_settings import *
 else:

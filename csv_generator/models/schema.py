@@ -1,9 +1,9 @@
 from django.db import models
-
+from . import BaseModel
 from schemas.project import settingsproxy
 
 
-class Schema(models.Model):
+class Schema(BaseModel):
     COMMA = ','
     SEMICOLON = ';'
     COLON = ':'
@@ -38,3 +38,5 @@ class Schema(models.Model):
     )
     schema_column = models.JSONField(null=False, blank=True, default=dict)
 
+    def __str__(self):
+        return self.name

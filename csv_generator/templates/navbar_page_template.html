@@ -1,0 +1,68 @@
+{% extends 'base_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block global-pre-body %}
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <!-- Additional container -->
+        <div class="container">
+
+            {% block navbar-brand %}
+                <h3>FakeCSV</h3>
+            {% endblock navbar-brand %}
+
+            {% block navbar-menu %}
+                <!-- Collapse button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                        aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible content -->
+                <div class="collapse navbar-collapse" id="basicExampleNav">
+
+                    {% block navbar-start %}
+                        {% if user.is_authenticated %}
+                            <ul class="navbar-nav mr-auto">
+                                <li>
+                                    <p> {% trans 'Schemas' %}</p>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'user_management' %}" class="nav-link">
+                                        {% trans 'Users' %}
+                                    </a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    {% endblock navbar-start %}
+
+                    {% block navbar-middle %}{% endblock %}
+
+                    {% block navbar-end %}
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                {% translate 'Hello,' %} {{ user.username }}
+                            </li>
+                            <li class="nav-item"><a title="Logout" href="{% url 'logout' %}" class="nav-link"><i
+                                    class="fa fa-sign-out"></i>{% translate 'Logout' %}</a></li>
+                        </ul>
+                    {% endblock navbar-end %}
+                </div>
+                <!-- Collapsible content -->
+                </div>
+            {% endblock navbar-menu %}
+    </nav>
+    <!--/.Navbar-->
+{% endblock global-pre-body %}
+<!-- Footer -->
+{% block footer %}
+    <footer class="page-footer font-small blue-gradient fixed-bottom">
+        <!-- Copyright -->
+            <a href="https://mdbootstrap.com/education/bootstrap/">All rights reserved.</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+{% endblock footer %}
+<!-- Footer -->

@@ -1,0 +1,40 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content-header %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            {% translate 'Data schemas' %}
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-success">{% translate 'New schema' %}</button>
+        </div>
+    </div>
+{% endblock content-header %}
+
+{% block content-main %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% translate 'Title' %}</th>
+            <th scope="col">{% translate 'Modified' %}</th>
+            <th scope="col">{% translate 'Actions' %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for schema in schemas %}
+                <th scope="row">{{ schema.id }}</th>
+                <td>{{ schema.name }}</td>
+                <td>{{ schema.changed_datetime }}</td>
+                <td>
+                    <a href="{% url 'schema_edit' schema_id=schema.id %}">{% translate 'Edit scheme' %}</a>
+                    <a href="{% url 'schema_delete' schema_id=schema.id %}">{% translate 'Delete' %}</a>
+                </td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+{% endblock content-main %}
