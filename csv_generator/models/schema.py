@@ -8,15 +8,15 @@ class Schema(BaseModel):
     SEMICOLON = ';'
     COLON = ':'
     COLUMN_SEPARATOR = [
-        (COMMA, 'Comma'),
-        (SEMICOLON, 'Semicolon'),
-        (COLON, 'Colon'),
+        (COMMA, 'Comma (,)'),
+        (SEMICOLON, 'Semicolon(;)'),
+        (COLON, 'Colon(:)'),
     ]
-    QOUTE = "'"
-    DOUBLE_QOUTE = '"'
+    QUOTE = "'"
+    DOUBLE_QUOTE = '"'
     STRING_CHARACTER = [
-        (QOUTE, 'Quote'),
-        (DOUBLE_QOUTE, 'Double quote'),
+        (QUOTE, "Quote(')"),
+        (DOUBLE_QUOTE, 'Double quote(")'),
     ]
 
     name = models.CharField(

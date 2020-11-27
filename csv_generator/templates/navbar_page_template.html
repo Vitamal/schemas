@@ -8,7 +8,6 @@
 
         <!-- Additional container -->
         <div class="container">
-
             {% block navbar-brand %}
                 <h3>FakeCSV</h3>
             {% endblock navbar-brand %}
@@ -24,29 +23,26 @@
                 <div class="collapse navbar-collapse" id="basicExampleNav">
 
                     {% block navbar-start %}
-                        {% if user.is_authenticated %}
-                            <ul class="navbar-nav mr-auto">
-                                <li>
-                                    <p> {% trans 'Schemas' %}</p>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'user_management' %}" class="nav-link">
-                                        {% trans 'Users' %}
-                                    </a>
-                                </li>
-                            </ul>
-                        {% endif %}
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">{% trans 'Schemas' %} <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                        </ul>
                     {% endblock navbar-start %}
 
                     {% block navbar-middle %}{% endblock %}
 
                     {% block navbar-end %}
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item dropdown">
-                                {% translate 'Hello,' %} {{ user.username }}
+                        <ul class="navbar-nav my-2 my-lg-0">
+                            <li class="nav-item mr-sm-2">
+                                {% translate 'Hello, ' %} {{ user.username }}
                             </li>
-                            <li class="nav-item"><a title="Logout" href="{% url 'logout' %}" class="nav-link"><i
-                                    class="fa fa-sign-out"></i>{% translate 'Logout' %}</a></li>
+                            <li class="nav-item my-2 my-sm-0">
+                                <a title="Logout" href="#">
+                                    {% translate 'Logout' %}
+                                </a>
+                            </li>
                         </ul>
                     {% endblock navbar-end %}
                 </div>
@@ -60,7 +56,7 @@
 {% block footer %}
     <footer class="page-footer font-small blue-gradient fixed-bottom">
         <!-- Copyright -->
-            <a href="https://mdbootstrap.com/education/bootstrap/">All rights reserved.</a>
+        <a href="https://mdbootstrap.com/education/bootstrap/">All rights reserved.</a>
         </div>
         <!-- Copyright -->
     </footer>

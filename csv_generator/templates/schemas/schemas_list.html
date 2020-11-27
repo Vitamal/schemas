@@ -2,16 +2,16 @@
 {% load i18n %}
 {% load static %}
 
-{% block content-header %}
+{% block header %}
     <div class="row">
         <div class="col-auto mr-auto">
-            {% translate 'Data schemas' %}
+            <h2>{% translate 'Data schemas' %}</h2>
         </div>
         <div class="col-auto">
             <button type="button" class="btn btn-success">{% translate 'New schema' %}</button>
         </div>
     </div>
-{% endblock content-header %}
+{% endblock header %}
 
 {% block content-main %}
     <table class="table table-bordered">
@@ -30,8 +30,8 @@
                 <td>{{ schema.name }}</td>
                 <td>{{ schema.changed_datetime }}</td>
                 <td>
-                    <a href="{% url 'schema_edit' schema_id=schema.id %}">{% translate 'Edit scheme' %}</a>
-                    <a href="{% url 'schema_delete' schema_id=schema.id %}">{% translate 'Delete' %}</a>
+{#                    <a href="{% url 'schema_edit' schema_id=schema.id %}">{% translate 'Edit scheme' %}</a>#}
+{#                    <a href="{% url 'schema_delete' schema_id=schema.id %}">{% translate 'Delete' %}</a>#}
                 </td>
             {% endfor %}
         </tr>

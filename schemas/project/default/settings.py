@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'schemas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'schemas',
         'USER': os.environ.get('POSTGRES_USER', 'schemas'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '1234'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),

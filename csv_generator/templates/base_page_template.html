@@ -29,9 +29,11 @@
 <body>
 {% block messages %} {% endblock messages %}
 
+{% block global-pre-body %} {% endblock global-pre-body  %}
+
 {% block body %}
     <!--Main Navigation-->
-    <header>
+    <header class="container my-3">
         {% block header %} {% endblock header %}
     </header>
     <!--Main Navigation-->

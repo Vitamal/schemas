@@ -3,7 +3,6 @@ from gettext import gettext
 
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import reverse
 from django.utils.translation import gettext
 
 

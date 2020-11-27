@@ -1,0 +1,41 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <h2>{% translate 'New schema' %}</h2>
+{% endblock header %}
+
+{% block content-main %}
+    <div class="container-fluid">
+        <form method="post" class="form-group">
+            {% csrf_token %}
+            <div class="text-right">
+                <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
+            </div>
+            {% for field in form %}
+                {% if field.label != 'Schema column' %}
+                    <div class="row">
+                        <div class="col-md-6 mt-2">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <input type="{{ field.input_type }}" id="{{ field.id_for_label }}" class="form-control"
+                                   placeholder="{{ field.label }}">
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="container mt-3">
+                        <h3>{% translate 'Schema column' %}</h3>
+                            <div class="col">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <input type="{{ field.input_type }}" id="{{ field.id_for_label }}" class="form-control"
+                                       placeholder="{{ field.label }}">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="my-3">
+                <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
+            </div>
+        </form>
+    </div>
+{% endblock content-main %}

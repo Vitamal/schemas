@@ -1,0 +1,54 @@
+{% load i18n %}
+{# this form depends on visible field widget attributes #}
+{# conditioned - field will be rendered only if form property conditioned_fields_condition is True #}
+{# form_group_class - classes to append to form-group div #}
+{# forced_id - form-group div id #}
+{# data-json - form-group div data-json attribute #}
+{# hide_label - skip fields label rendering #}
+{# helptext_qc - render helptext question mark icon after the label #}
+{# skip_ht - don't render field helptext #}
+{# label_after - text for additional label after field #}
+{# collaborative_ck_editor - collborative field layout #}
+{% for non_field_error in form.non_field_errors %}
+    <p class="text-danger">{{ non_field_error }}</p>
+{% endfor %}
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+<div class="{% if form.columns %}row row-cols-1 row-cols-md-{{ form.columns }}{% else %}{% endif %}">
+    {% for field in form.visible_fields %}
+        {% if not field.field.widget.attrs.conditioned or form.conditioned_fields_condition %}
+            <div class="form-group{% if field.field.widget.attrs.form_group_class %} {{ field.field.widget.attrs.form_group_class }}{% endif %}"
+                    {% if field.field.widget.attrs.forced_id %} id="{{ field.field.widget.attrs.forced_id }}"{% endif %}
+                    {% if field.field.widget.attrs.data_json %} data-json='{{ field.field.widget.attrs.data_json }}'{% endif %}
+            >
+                {% if not field.field.widget.attrs.hide_label %}
+                    <label for="{{ field.id_for_label }}" class="label is-normal
+                                                                 {% if field.field.widget.attrs.helptext_qc %}d-flex{% endif %}
+                                                                 {% if field.field.widget.attrs.collaborative_ck_editor %}float-left my-3{% endif %}">
+                        {{ field.label_tag }}
+                        {% if field.field.widget.attrs.helptext_qc %}
+                            <a href="#ht_{{ field.name }}" role="button" class="text-secondary" tabindex="-1">
+                                <i id="ht_{{ field.name }}" class="fa fa-question-circle-o ml-2 mt-1"></i>
+                            </a>
+                        {% endif %}
+                    </label>
+                {% endif %}
+                    {{ field }}
+                {% if field.field.widget.attrs.label_after %}
+                    <label for="{{ field.id_for_label }}" class="label is-normal">
+                        {{ field.field.widget.attrs.label_after }}
+                    </label>
+                {% endif %}
+                {% for error in field.errors %}
+                    <small class="form-text text-danger"><i class="fa fa-times"></i> {{ error }}</small>
+                {% endfor %}
+                {% if not field.field.widget.attrs.skip_ht %}
+                    <small><p class="form-text text-muted {% if field.field.widget.attrs.help_text_right %}text-right{% endif %}"
+                              id="helptext_{{ field.auto_id }}">{{ field.help_text }}</p></small>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

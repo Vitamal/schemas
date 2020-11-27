@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from csv_generator.models import Schema, User
+
+
+@admin.register(Schema)
+class SchemaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'user')
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username')
