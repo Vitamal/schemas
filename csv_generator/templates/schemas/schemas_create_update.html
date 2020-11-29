@@ -10,32 +10,74 @@
     <div class="container-fluid">
         <form method="post" class="form-group">
             {% csrf_token %}
+            {{ form.non_field_errors }}
             <div class="text-right">
                 <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
             </div>
-            {% for field in form %}
-                {% if field.label != 'Schema column' %}
-                    <div class="row">
-                        <div class="col-md-6 mt-2">
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            <input type="{{ field.input_type }}" id="{{ field.id_for_label }}" class="form-control"
-                                   placeholder="{{ field.label }}">
-                        </div>
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    <div class="form-group">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {{ form.name.errors }}
                     </div>
-                {% else %}
-                    <div class="container mt-3">
-                        <h3>{% translate 'Schema column' %}</h3>
-                            <div class="col">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                <input type="{{ field.input_type }}" id="{{ field.id_for_label }}" class="form-control"
-                                       placeholder="{{ field.label }}">
-                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    <div class="form-group">
+                        {{ form.column_separator.label_tag }}
+                        {{ form.column_separator }}
+                        {{ form.column_separator.errors }}
                     </div>
-                {% endif %}
-            {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    <div class="form-group">
+                        {{ form.string_character.label_tag }}
+                        {{ form.string_character }}
+                        {{ form.string_character.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <h3>{% translate 'Schema column' %}</h3>
+                <div class="form-row" id="schema_column_form">
+                    <div class="form-group col-md-3">
+                        {{ form.column_name.label_tag }}
+                        {{ form.column_name }}
+                        {{ form.column_name.errors }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form.type.label_tag }}
+                        {{ form.type }}
+                        {{ form.type.errors }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        {{ form.from_field.label_tag }}
+                        {{ form.from_field }}
+                        {{ form.from_field.errors }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        {{ form.to_field.label_tag }}
+                        {{ form.to_field }}
+                        {{ form.to_field.errors }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form.order.label_tag }}
+                        {{ form.order }}
+                        {{ form.order.errors }}
+                    </div>
+                </div>
+            </div>
             <div class="my-3">
                 <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
             </div>
         </form>
     </div>
 {% endblock content-main %}
+
+{% block includes-js %}
+
+{% endblock includes-js %}

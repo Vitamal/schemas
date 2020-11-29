@@ -23,8 +23,6 @@ class Schema(BaseModel):
         max_length=100,
         verbose_name='name'
     )
-    user = models.ForeignKey(to=settingsproxy.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                             related_name='user')
     column_separator = models.CharField(
         max_length=1,
         choices=COLUMN_SEPARATOR,
