@@ -1,0 +1,21 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <h2>{% translate 'Delete schema' %}</h2>
+        </div>
+    </div>
+{% endblock header %}
+
+{% block content-main %}
+    <p>{% blocktranslate with name=schema_name %}Are you sure you want to delete the schema {{ name }}
+        ?{% endblocktranslate %}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">{% translate 'Delete' %}</button>
+        <a class="btn btn-warning" href="{% url 'schemas_list' %}">{% translate 'Cancel' %}</a>
+    </form>
+{% endblock content-main %}

@@ -43,7 +43,7 @@
             </div>
             <div class="container mt-3">
                 <h3>{% translate 'Schema column' %}</h3>
-                <div class="form-row" id="schema_column_form">
+                <div class="form-row" id="schema_column_form1">
                     <div class="form-group col-md-3">
                         {{ form.column_name.label_tag }}
                         {{ form.column_name }}
@@ -70,14 +70,15 @@
                         {{ form.order.errors }}
                     </div>
                 </div>
-            </div>
-            <div class="my-3">
-                <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
+                <div id="includeContent"></div>
             </div>
         </form>
+            <div class="my-3" id="add_button">
+                <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
+            </div>
     </div>
 {% endblock content-main %}
 
 {% block includes-js %}
-
+    <script src="{% static 'csv_generator/js/schema_column_include.js' %}"></script>
 {% endblock includes-js %}

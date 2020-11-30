@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.views.generic import CreateView
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import ModelFormMixin, UpdateView
 
 from csv_generator.forms import SchemaForm
@@ -33,8 +33,12 @@ class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
         return super().form_valid(form)
 
 
-class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
-    form_class = SchemaForm
+# class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
+#     form_class = SchemaForm
+class SchemaCreateView(TemplateView):
+    template_name = 'schemas/schemas_create_update.html'
+
+
 
 class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
 

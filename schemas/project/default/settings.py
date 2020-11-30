@@ -127,3 +127,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTH_USER_MODEL = 'csv_generator.User'
+
+LOGIN_REDIRECT_URL = 'schemas_list'  # URL redirecting after a successful authentication
+
+LOGIN_URL = '/login/'
