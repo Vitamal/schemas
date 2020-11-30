@@ -1,48 +1,54 @@
-from django.urls import reverse
+from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import ModelFormMixin, UpdateView
 
-from csv_generator.forms import SchemaForm
 from csv_generator.models import Schema
-from csv_generator.views.access_mixin import SchemasAccessMixin
 
 
-class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
-    model = Schema
-    template_name = 'schemas/schemas_create_update.html'
-    context_object_name = 'schema'
-    object = None
-
-    def get_success_url(self):
-        return reverse('schemas_list')
-
-    def form_valid(self, form):
-        self.object = form.save()
-
-        if not self.object.created_by:
-            self.object.created_by = getattr(self, 'request').user
-        self.object.changed_by = getattr(self, 'request').user
-        self.object.user = getattr(self, 'request').user
-
-        schema_column = form.cleaned_data
-        for name in Schema._meta.get_fields():
-            if name.name in schema_column:
-                print('remove the: ', name.name)
-                schema_column.pop(name.name)
-        self.object.schema_column = schema_column
-        return super().form_valid(form)
-
-
-# class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
-#     form_class = SchemaForm
 class SchemaCreateView(TemplateView):
     template_name = 'schemas/schemas_create_update.html'
 
+    def create_schema(self, name, column_separator, string_character, column_name, sc_type, from_num, to_num, order):
+        schema_column = {'column_name': column_name, 'type': sc_type, 'from_num': from_num, 'to_num': to_num,
+                         'order': order}
+        schema = Schema.objects.create(name=name, column_separator=column_separator, string_character=string_character,
+                                       schema_column=schema_column)
+        if not schema.created_by:
+            schema.created_by = getattr(self, 'request').user
+        schema.changed_by = getattr(self, 'request').user
+        schema.user = getattr(self, 'request').user
+        schema.save()
 
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            column_separator = request.POST.get('column_separator')
+            string_character = request.POST.get('string_character')
+            column_name = request.POST.get('column_name')
+            sc_type = request.POST.get('type')
+            from_num = request.POST.get('from_num')
+            to_num = request.POST.get('to_num')
+            order = request.POST.get('order')
+            if self.form_validation(name, column_separator, string_character, column_name, sc_type, from_num, to_num, order):
+                self.create_schema(name, column_separator, string_character, column_name, sc_type, from_num, to_num, order)
+            return HttpResponseRedirect('/schemas/')
+        return render(request, self.template_name)
 
-class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
+    def form_validation(self, name, column_separator, string_character, column_name, sc_type, from_num, to_num, order):
+        if not name:
+            raise ValidationError(
+                'Invalid values: %(value)',
+                code='invalid',
+                params={'value': 'Name'},
+            )
 
-    pk_url_kwarg = 'schema_id'
-    form_class = SchemaForm
-
-
+        # for to_field, from_field in to_num, from_num:
+        #     if to_field or from_field:
+        #         if not to_field or not from_field or to_field <= from_field :
+        #             raise ValidationError(
+        #                 'Invalid values: %(value)',
+        #                 code='invalid',
+        #                 params={'value': 'From: To:'},
+        #             )
+        return True
