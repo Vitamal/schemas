@@ -2,29 +2,37 @@
                 <h3>{% translate 'Schema column' %}</h3>
                 <div class="form-row" id="schema_column_form">
                     <div class="form-group col-md-3">
-                        {{ form.column_name.label_tag }}
-                        {{ form.column_name }}
-                        {{ form.column_name.errors }}
+                        <label for="id_column_name">Column name</label>
+                        <input type="text" id="id_column_name" name="column_name" maxlength="100" class="form-control">
+                        <small class="text-danger">{{ errors.column_name }}</small>
                     </div>
                     <div class="form-group col-md-3">
-                        {{ form.type.label_tag }}
-                        {{ form.type }}
-                        {{ form.type.errors }}
+                        <label for="id_type">Type</label>
+                        <select name="type" id="id_type" class="form-control">
+                            <option value="full_name">Full name</option>
+                            <option value="job">Job</option>
+                            <option value="domain">Domain name</option>
+                            <option value="phone">Phone number</option>
+                            <option value="company">Company name</option>
+                            <option value="text">Text</option>
+                            <option value="integer">Integer</option>
+                            <option value="address">Address</option>
+                            <option value="date">Date</option>
+                        </select>
+                        <small class="text-danger">{{ errors.type }}</small>
                     </div>
                     <div class="form-group col-md-1">
-                        {{ form.from_field.label_tag }}
-                        {{ form.from_field }}
-                        {{ form.from_field.errors }}
+                        <label for="id_from">From:</label>
+                        <input type="number" id="id_from" name="from_num" min="0" max="100" class="form-control">
+                        <small class="text-danger">{{ errors.from_to }}</small>
                     </div>
                     <div class="form-group col-md-1">
-                        {{ form.to_field.label_tag }}
-                        {{ form.to_field }}
-                        {{ form.to_field.errors }}
+                        <label for="id_to">To:</label>
+                        <input type="number" id="id_to" name="to_num" min="0" max="100" class="form-control">
+                        <small class="text-danger">{{ errors.from_to }}</small>
                     </div>
                     <div class="form-group col-md-2">
-                        {{ form.order.label_tag }}
-                        {{ form.order }}
-                        {{ form.order.errors }}
+                        <label for="id_order">Order</label>
+                        <input type="number" id="id_order" name="order" min="0" max="100" class="form-control">
                     </div>
                 </div>
-            </div>

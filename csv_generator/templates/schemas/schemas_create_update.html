@@ -18,7 +18,8 @@
                 <div class="col-md-6 mt-2">
                     <div class="form-group">
                         <label for="id_name">{% translate 'Name' %}</label>
-                        <input type="text" id="id_name" name="name" maxlength="100" class="form-control">
+                        <input type="text" id="id_name" name="name" maxlength="100" class="form-control" value="{{ form.name }}">
+                        <small class="text-danger">{{ errors.name }}</small>
                     </div>
                 </div>
             </div>
@@ -31,6 +32,7 @@
                             <option value=";">{% translate 'Semicolon(;)' %}</option>
                             <option value=":">{% translate 'Colon(:)' %}</option>
                         </select>
+                        <small class="text-danger">{{ errors.column_separator }}</small>
                     </div>
                 </div>
             </div>
@@ -42,6 +44,7 @@
                             <option value="'">{% translate "Quote(')" %}</option>
                             <option value='"'>{% translate 'Double quote(")' %}</option>
                         </select>
+                        <small class="text-danger">{{ errors.string_character }}</small>
                     </div>
                 </div>
             </div>
@@ -50,7 +53,8 @@
                 <div class="form-row" id="schema_column_form1">
                     <div class="form-group col-md-3">
                         <label for="id_column_name">Column name</label>
-                        <input type="text" id="id_column_name" name="column_name" maxlength="100" class="form-control">
+                        <input type="text" id="id_column_name" name="column_name" maxlength="100" class="form-control" value="{{ form.column_name }}">
+                        <small class="text-danger">{{ errors.column_name }}</small>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="id_type">Type</label>
@@ -65,18 +69,21 @@
                             <option value="address">Address</option>
                             <option value="date">Date</option>
                         </select>
+                        <small class="text-danger">{{ errors.type }}</small>
                     </div>
                     <div class="form-group col-md-1">
                         <label for="id_from">From:</label>
-                        <input type="number" id="id_from" name="from_num" min="0" max="100" class="form-control">
+                        <input type="number" id="id_from" name="from_num" min="0" max="100" class="form-control" value="{{ form.from_num }}">
+                        <small class="text-danger">{{ errors.from_to }}</small>
                     </div>
                     <div class="form-group col-md-1">
                         <label for="id_to">To:</label>
-                        <input type="number" id="id_to" name="to_num" min="0" max="100" class="form-control">
+                        <input type="number" id="id_to" name="to_num" min="0" max="100" class="form-control" value="{{ form.to_num }}">
+                        <small class="text-danger">{{ errors.from_to }}</small>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="id_order">Order</label>
-                        <input type="number" id="id_order" name="order" min="0" max="100" class="form-control">
+                        <input type="number" id="id_order" name="order" min="0" max="100" class="form-control" value="{{ form.order }}">
                     </div>
                 </div>
                 <div id="includeContent"></div>
