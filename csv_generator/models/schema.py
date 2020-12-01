@@ -1,6 +1,5 @@
 from django.db import models
 from . import BaseModel
-from schemas.project import settingsproxy
 
 
 class Schema(BaseModel):
