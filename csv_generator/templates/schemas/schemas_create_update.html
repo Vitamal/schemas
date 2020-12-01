@@ -17,34 +17,27 @@
             <div class="row">
                 <div class="col-md-6 mt-2">
                     <div class="form-group">
-                        <label for="id_name">{% translate 'Name' %}</label>
-                        <input type="text" id="id_name" name="name" maxlength="100" class="form-control" value="{{ form.name }}">
-                        <small class="text-danger">{{ errors.name }}</small>
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {{ form.name.errors }}
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mt-2">
                     <div class="form-group">
-                        <label for="id_column_separator">{% translate 'Column separator' %}</label>
-                        <select name="column_separator" id="id_column_separator" class="form-control">
-                            <option value=",">{% translate 'Comma (,)' %}</option>
-                            <option value=";">{% translate 'Semicolon(;)' %}</option>
-                            <option value=":">{% translate 'Colon(:)' %}</option>
-                        </select>
-                        <small class="text-danger">{{ errors.column_separator }}</small>
+                        {{ form.column_separator.label_tag }}
+                        {{ form.column_separator }}
+                        {{ form.column_separator.errors }}
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mt-2">
                     <div class="form-group">
-                        <label for="id_string_character">{% translate 'String character' %}</label>
-                        <select name="string_character" id="id_string_character" class="form-control">
-                            <option value="'">{% translate "Quote(')" %}</option>
-                            <option value='"'>{% translate 'Double quote(")' %}</option>
-                        </select>
-                        <small class="text-danger">{{ errors.string_character }}</small>
+                        {{ form.string_character.label_tag }}
+                        {{ form.string_character }}
+                        {{ form.string_character.errors }}
                     </div>
                 </div>
             </div>
@@ -52,41 +45,31 @@
                 <h3>{% translate 'Schema column' %}</h3>
                 <div class="form-row" id="schema_column_form1">
                     <div class="form-group col-md-3">
-                        <label for="id_column_name">Column name</label>
-                        <input type="text" id="id_column_name" name="column_name" maxlength="100" class="form-control" value="{{ form.column_name }}">
-                        <small class="text-danger">{{ errors.column_name }}</small>
+                        {{ form.column_name.label_tag }}
+                        {{ form.column_name }}
+                        {{ form.column_name.errors }}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="id_type">Type</label>
-                        <select name="type" id="id_type" class="form-control">
-                            <option value="full_name">Full name</option>
-                            <option value="job">Job</option>
-                            <option value="domain">Domain name</option>
-                            <option value="phone">Phone number</option>
-                            <option value="company">Company name</option>
-                            <option value="text">Text</option>
-                            <option value="integer">Integer</option>
-                            <option value="address">Address</option>
-                            <option value="date">Date</option>
-                        </select>
-                        <small class="text-danger">{{ errors.type }}</small>
+                        {{ form.type.label_tag }}
+                        {{ form.type }}
+                        {{ form.type.errors }}
                     </div>
                     <div class="form-group col-md-1">
-                        <label for="id_from">From:</label>
-                        <input type="number" id="id_from" name="from_num" min="0" max="100" class="form-control" value="{{ form.from_num }}">
-                        <small class="text-danger">{{ errors.from_to }}</small>
+                        {{ form.from_field.label_tag }}
+                        {{ form.from_field }}
+                        {{ form.from_field.errors }}
                     </div>
                     <div class="form-group col-md-1">
-                        <label for="id_to">To:</label>
-                        <input type="number" id="id_to" name="to_num" min="0" max="100" class="form-control" value="{{ form.to_num }}">
-                        <small class="text-danger">{{ errors.from_to }}</small>
+                        {{ form.to_field.label_tag }}
+                        {{ form.to_field }}
+                        {{ form.to_field.errors }}
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="id_order">Order</label>
-                        <input type="number" id="id_order" name="order" min="0" max="100" class="form-control" value="{{ form.order }}">
+                        {{ form.order.label_tag }}
+                        {{ form.order }}
+                        {{ form.order.errors }}
                     </div>
                 </div>
-                <div id="includeContent"></div>
             </div>
         </form>
         <div class="my-3" id="add_button">
