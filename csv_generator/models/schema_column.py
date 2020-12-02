@@ -36,7 +36,7 @@ class SchemaColumn(BaseModel):
 
     order = models.IntegerField(null=True, blank=True, verbose_name='order')
 
-    schema = models.ForeignKey('csv_generator.Schema', on_delete=models.CASCADE, related_name='schema')
+    schema = models.ForeignKey('csv_generator.Schema', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

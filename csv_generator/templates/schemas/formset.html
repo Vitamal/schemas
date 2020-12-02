@@ -1,0 +1,45 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <h2>{% translate 'New schema' %}</h2>
+{% endblock header %}
+
+{% block content-main %}
+    <div class="container-fluid">
+        {% if schema_column_formset.errors %}
+            {% for form in schema_column_formset %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" class="form-group">
+            {% csrf_token %}
+            {{ schema_column_formset.management_form }}
+            {{ form.as_p }}
+            {{ schema_column_formset }}
+            <div class="my-3" id="add_button">
+                <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
+            </div>
+        </form>
+        <div class="my-3" id="add_button">
+            <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
+        </div>
+    </div>
+{% endblock content-main %}
+
+{% block includes-js %}
+    <script src="{% static 'csv_generator/js/schema_column_include.js' %}"></script>
+{% endblock includes-js %}

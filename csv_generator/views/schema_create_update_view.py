@@ -1,75 +1,109 @@
-from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.views.generic.base import TemplateView
+from django.urls import reverse
+from django.views.generic import CreateView
+from django.views.generic.edit import ModelFormMixin, UpdateView
 
-from csv_generator.models import Schema
+from csv_generator.forms import SchemaColumnForm, SchemaForm
+from csv_generator.models import Schema, SchemaColumn
+from csv_generator.views.access_mixin import SchemasAccessMixin
 
 
-class SchemaCreateView(TemplateView):
-    template_name = 'schemas/schemas_create_update.html'
-    errors = {}
+# class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
+#     model = Schema
+#     template_name = 'schemas/formset.html'
+#     context_object_name = 'schema'
+#     object = None
+#
+#     def get_success_url(self):
+#         return reverse('schemas_list')
+#
+#     def form_valid(self, form):
+#         self.object = form.save()
+#
+#         if not self.object.created_by:
+#             self.object.created_by = getattr(self, 'request').user
+#         self.object.changed_by = getattr(self, 'request').user
+#         self.object.user = getattr(self, 'request').user
+#
+#         schema_column = form.cleaned_data
+#         for name in Schema._meta.get_fields():
+#             if name.name in schema_column:
+#                 print('remove the: ', name.name)
+#                 schema_column.pop(name.name)
+#         self.object.schema_column = schema_column
+#         return super().form_valid(form)
 
-    def create_schema(self, name, column_separator, string_character, column_name, sc_type, from_num, to_num, order):
-        schema_column = {'column_name': column_name, 'type': sc_type, 'from_num': from_num, 'to_num': to_num,
-                         'order': order}
-        schema = Schema.objects.create(name=name, column_separator=column_separator, string_character=string_character,
-                                       schema_column=schema_column)
-        if not schema.created_by:
-            schema.created_by = getattr(self, 'request').user
-        schema.changed_by = getattr(self, 'request').user
-        schema.user = getattr(self, 'request').user
-        schema.save()
+
+class SchemaCreateView(CreateView):
+    model = Schema
+    template_name = 'schemas/formset.html'
+    context_object_name = 'schema'
+    object = None
+    form_class = SchemaForm
+    SchemaColumnInlineFormset = inlineformset_factory(Schema, SchemaColumn, form=SchemaColumnForm, extra=1)
+    formset = SchemaColumnInlineFormset
+
+    def get_success_url(self):
+        return reverse('schemas_list')
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        schema_column_formset = self.formset()
+
+        return self.render_to_response(
+            self.get_context_data(form=form, schema_column_formset=schema_column_formset)
+        )
 
     def post(self, request, *args, **kwargs):
-        if request.POST:
-            name = request.POST.get('name')
-            column_separator = request.POST.get('column_separator')
-            string_character = request.POST.get('string_character')
-            column_name = request.POST.getlist('column_name')
-            sc_type = request.POST.getlist('type')
-            from_num = request.POST.getlist('from_num')
-            to_num = request.POST.getlist('to_num')
-            order = request.POST.getlist('order')
-            if self.form_validation(name, column_separator, string_character, column_name, sc_type, from_num, to_num,
-                                    order):
-                self.create_schema(name, column_separator, string_character, column_name, sc_type, from_num, to_num,
-                                   order)
-            else:
-                context = self.get_context_data(
-                    {'name': name, 'column_separator': column_separator, 'string_character': string_character,
-                     'column_name': column_name, 'sc_type': sc_type, 'from_num': from_num, 'to_num': to_num,
-                     'order': order})
-                return render(request, self.template_name, context=context)
-            return HttpResponseRedirect('/schemas/')
-        return render(request, self.template_name)
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        schema_column_formset = self.formset(self.request.POST)
 
-    def form_validation(self, name, column_separator, string_character, column_name, sc_type, from_num, to_num, order):
-        if not name:
-            self.errors['name'] = 'Name is needed!'
-            return False
-        if not column_separator:
-            self.errors['column_separator'] = 'The column separator is needed!'
-            return False
-        if not string_character:
-            self.errors['string_character'] = 'The string character is needed!'
-            return False
-        for i in range(len(column_name)):
-            if not column_name[i]:
-                self.errors['column_name'] = 'The column name is needed!'
-                return False
-            if not sc_type[i]:
-                self.errors['type'] = 'The type is needed!'
-                return False
-            if from_num[i] or to_num[i]:
-                if not from_num[i] or not to_num[i] or int(to_num[i]) <= int(from_num[i]):
-                    self.errors['from_to'] = 'The fields is invalid!'
-                    return False
-        return True
+        if (form.is_valid() and schema_column_formset.is_valid()):
+            return self.form_valid(form, schema_column_formset)
+        print('==============================', schema_column_formset.is_valid(), form.is_valid())
+        print(messages.error(request, "Error"))
+        return self.form_invalid(form, schema_column_formset)
 
-    def get_context_data(self, data, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['errors'] = self.errors
-        context['form'] = data
-        print('****************************', context)
+    def form_valid(self, form, schema_column_formset):
+        """
+        Called if all forms are valid. Creates a Schema instance along
+        with associated schema_column and then redirects to a success page.
+        """
+        self.object = form.save()
+        schema_column_formset.instance = self.object
+        schema_column_formset.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, schema_column_formset):
+        """
+        Called if whether a form is invalid. Re-renders the context
+        data with the data-filled forms and errors.
+        """
+        return self.render_to_response(
+            self.get_context_data(form=form, schema_column_formset=schema_column_formset)
+        )
+
+    def get_context_data(self, **kwargs):
+        """ Add formset to the context_data. """
+        context = super(SchemaCreateView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['form'] = self.form_class(self.request.POST)
+            context['schema_column_formset'] = self.formset(self.request.POST)
+        else:
+            context['form'] = self.form_class()
+            context['schema_column_formset'] = self.formset()
+
         return context
+
+
+class SchemaUpdateView(UpdateView):
+    pk_url_kwarg = 'schema_id'
+    form_class = SchemaForm

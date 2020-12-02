@@ -8,9 +8,26 @@
 
 {% block content-main %}
     <div class="container-fluid">
+        {% if column_form.errors %}
+            {% for form in column_form %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form method="post" class="form-group">
             {% csrf_token %}
-            {{ form.non_field_errors }}
+            {{ schema_1column_formset.management_form }}
             <div class="text-right">
                 <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
             </div>
@@ -43,33 +60,35 @@
             </div>
             <div class="container mt-3">
                 <h3>{% translate 'Schema column' %}</h3>
-                <div class="form-row" id="schema_column_form1">
-                    <div class="form-group col-md-3">
-                        {{ form.column_name.label_tag }}
-                        {{ form.column_name }}
-                        {{ form.column_name.errors }}
+                {% for column_form in schema1_column_formset %}
+                    <div class="form-row" id="schema_column_form1">
+                        <div class="form-group col-md-3">
+                            {{ column_form.name.label_tag }}
+                            {{ column_form.name }}
+                            {{ column_form.name.errors }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ column_form.type.label_tag }}
+                            {{ column_form.type }}
+                            {{ column_form.type.errors }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            {{ column_form.from_field.label_tag }}
+                            {{ column_form.from_field }}
+                            {{ column_form.from_field.errors }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            {{ column_form.to_field.label_tag }}
+                            {{ column_form.to_field }}
+                            {{ column_form.to_field.errors }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            {{ column_form.order.label_tag }}
+                            {{ column_form.order }}
+                            {{ focolumn_formrder.errors }}
+                        </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        {{ form.type.label_tag }}
-                        {{ form.type }}
-                        {{ form.type.errors }}
-                    </div>
-                    <div class="form-group col-md-1">
-                        {{ form.from_field.label_tag }}
-                        {{ form.from_field }}
-                        {{ form.from_field.errors }}
-                    </div>
-                    <div class="form-group col-md-1">
-                        {{ form.to_field.label_tag }}
-                        {{ form.to_field }}
-                        {{ form.to_field.errors }}
-                    </div>
-                    <div class="form-group col-md-2">
-                        {{ form.order.label_tag }}
-                        {{ form.order }}
-                        {{ form.order.errors }}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </form>
         <div class="my-3" id="add_button">
