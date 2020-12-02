@@ -38,7 +38,7 @@ from csv_generator.views.access_mixin import SchemasAccessMixin
 
 class SchemaCreateView(CreateView):
     model = Schema
-    template_name = 'schemas/formset.html'
+    template_name = 'schemas/schemas_create_update.html'
     context_object_name = 'schema'
     object = None
     form_class = SchemaForm

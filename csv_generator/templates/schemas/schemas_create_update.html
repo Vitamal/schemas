@@ -8,26 +8,27 @@
 
 {% block content-main %}
     <div class="container-fluid">
-        {% if column_form.errors %}
-            {% for form in column_form %}
+
+        {% if schema_column_formset.errors %}
+            {% for form in schema_column_formset %}
                 {% for field in form %}
                     {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
+                            {{ error|escape }}
                         </div>
                     {% endfor %}
                 {% endfor %}
             {% endfor %}
             {% for error in form.non_field_errors %}
                 <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
+                    {{ error|escape }}
                 </div>
             {% endfor %}
         {% endif %}
 
         <form method="post" class="form-group">
             {% csrf_token %}
-            {{ schema_1column_formset.management_form }}
+            {{ schema_column_formset.management_form }}
             <div class="text-right">
                 <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
             </div>
@@ -36,7 +37,7 @@
                     <div class="form-group">
                         {{ form.name.label_tag }}
                         {{ form.name }}
-                        {{ form.name.errors }}
+                        <small> {{ form.name.errors }}</small>
                     </div>
                 </div>
             </div>
@@ -45,7 +46,7 @@
                     <div class="form-group">
                         {{ form.column_separator.label_tag }}
                         {{ form.column_separator }}
-                        {{ form.column_separator.errors }}
+                        <small>{{ form.column_separator.errors }}</small>
                     </div>
                 </div>
             </div>
@@ -54,38 +55,38 @@
                     <div class="form-group">
                         {{ form.string_character.label_tag }}
                         {{ form.string_character }}
-                        {{ form.string_character.errors }}
+                        <small> {{ form.string_character.errors }}</small>
                     </div>
                 </div>
             </div>
             <div class="container mt-3">
                 <h3>{% translate 'Schema column' %}</h3>
-                {% for column_form in schema1_column_formset %}
+                {% for column_form in schema_column_formset.forms %}
                     <div class="form-row" id="schema_column_form1">
                         <div class="form-group col-md-3">
                             {{ column_form.name.label_tag }}
                             {{ column_form.name }}
-                            {{ column_form.name.errors }}
+                            <small>{{ column_form.name.errors }}</small>
                         </div>
                         <div class="form-group col-md-3">
                             {{ column_form.type.label_tag }}
                             {{ column_form.type }}
-                            {{ column_form.type.errors }}
+                            <small>{{ column_form.type.errors }}</small>
                         </div>
                         <div class="form-group col-md-1">
                             {{ column_form.from_field.label_tag }}
                             {{ column_form.from_field }}
-                            {{ column_form.from_field.errors }}
+                            <small>{{ column_form.from_field.errors }}</small>
                         </div>
                         <div class="form-group col-md-1">
                             {{ column_form.to_field.label_tag }}
                             {{ column_form.to_field }}
-                            {{ column_form.to_field.errors }}
+                            <small>{{ column_form.to_field.errors }}</small>
                         </div>
                         <div class="form-group col-md-2">
                             {{ column_form.order.label_tag }}
                             {{ column_form.order }}
-                            {{ focolumn_formrder.errors }}
+                            <small>{{ column_form.order.errors }}</small>
                         </div>
                     </div>
                 {% endfor %}
