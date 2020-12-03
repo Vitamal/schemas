@@ -1,12 +1,10 @@
-from django.forms import inlineformset_factory
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import CreateView
 from django.views.generic.edit import ModelFormMixin, UpdateView
 
-from csv_generator.forms import SchemaColumnForm, SchemaForm
+from csv_generator.forms import SchemaForm
 from csv_generator.forms.schema_column_form import SchemaColumnInlineFormset
-from csv_generator.models import Schema, SchemaColumn
+from csv_generator.models import Schema
 from csv_generator.views.access_mixin import SchemasAccessMixin
 
 
@@ -75,7 +73,6 @@ class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
 
 
 class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
-    formset = SchemaColumnInlineFormset
 
     def get_schema_column_formset(self, context):
         if self.request.POST:
@@ -102,17 +99,21 @@ class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
     #     )
 
 
-class SchemaUpdateView(SchemasAccessMixin, UpdateView):
+class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
     pk_url_kwarg = 'schema_id'
 
-    SchemaColumnInlineFormset = inlineformset_factory(Schema, SchemaColumn, form=SchemaColumnForm, extra=1)
-    formset = SchemaColumnInlineFormset
-
     def get_schema_column_formset(self, context):
-        schema = Schema.objects.get(id=self.pk_url_kwarg)
+        # schema = Schema.objects.get(id=schema.id)
+        schema = self.get_object()
         schema_columns = schema.schemacolumn_set.all()
         initial = schema_columns
         if self.request.POST:
             return SchemaColumnInlineFormset(self.request.POST, initial=initial, instance=self.object)
         else:
             return SchemaColumnInlineFormset(self.request.POST, instance=self.object)
+
+
+    def get_object(self, queryset=None):
+        schema = super().get_object(queryset)
+        return schema
+
