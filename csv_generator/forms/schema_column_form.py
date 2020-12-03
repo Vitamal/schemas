@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from csv_generator.models import Schema, SchemaColumn
 
@@ -41,3 +42,9 @@ class SchemaColumnForm(forms.ModelForm):
                 msg = _('The "From:" or "To:" fields is not valid!')
                 self.add_error('to_field', msg)
                 self.add_error('from_field', msg)
+
+SchemaColumnInlineFormset = inlineformset_factory(
+    Schema, SchemaColumn,
+    form=SchemaColumnForm,
+    extra=1
+)

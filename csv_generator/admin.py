@@ -9,7 +9,7 @@ class SchemaAdmin(admin.ModelAdmin):
 
 @admin.register(SchemaColumn)
 class SchemaColumnAdmin(admin.ModelAdmin):
-    list_display = ('id', 'schema', 'name', 'type', 'from_field', 'to_field', 'order')
+    list_display = ('id', 'schema', 'name', 'type', 'from_field', 'to_field', 'order', 'created_by')
 
 
 @admin.register(User)
