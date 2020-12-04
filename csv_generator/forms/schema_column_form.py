@@ -42,9 +42,12 @@ class SchemaColumnForm(forms.ModelForm):
                 msg = _('The "From:" or "To:" fields is not valid!')
                 self.add_error('to_field', msg)
                 self.add_error('from_field', msg)
+        return cleaned_data
+
 
 SchemaColumnInlineFormset = inlineformset_factory(
-    Schema, SchemaColumn,
+    Schema,
+    SchemaColumn,
     form=SchemaColumnForm,
     extra=1
 )
