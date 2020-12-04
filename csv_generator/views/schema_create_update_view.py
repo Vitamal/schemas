@@ -25,53 +25,40 @@ class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
         obj.changed_by = getattr(self, 'request').user
         obj.save()
 
-    def form_formset_valid(self, form, schema_column_formset):
-        """
-        Called if all forms are valid. Creates a Schema instance along
-        with associated schema_column and then redirects to a success page.
-        """
-        self.object = form.save()
-        schema_column_formset.instance = self.object
-        formset_object = schema_column_formset.save()
-        self.add_object_creator(self.object)
-        for obj in formset_object:
-            self.add_object_creator(obj)
-        return reverse(self.get_success_url())
-
-    def get(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        schema_column_formset = SchemaColumnInlineFormset()
-        return self.render_to_response(
-            self.get_context_data(form=form, schema_column_formset=schema_column_formset)
-        )
-
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        schema_column_formset = SchemaColumnInlineFormset(self.request.POST)
-        if form.is_valid() and schema_column_formset.is_valid():
-            return self.form_formset_valid(form, schema_column_formset)
-        return self.render_to_response(
-            self.get_context_data(form=form, schema_column_formset=schema_column_formset)
-        )
+    # def form_formset_valid(self, form, schema_column_formset):
+    #     """
+    #     Called if all forms are valid. Creates a Schema instance along
+    #     with associated schema_column and then redirects to a success page.
+    #     """
+    #     self.object = form.save()
+    #     schema_column_formset.instance = self.object
+    #     formset_object = schema_column_formset.save()
+    #     self.add_object_creator(self.object)
+    #     for obj in formset_object:
+    #         self.add_object_creator(obj)
+    #     return HttpResponseRedirect(self.get_success_url())
 
     def get_modified_schema_column_formset(self, schema_column_formset):
         return schema_column_formset
 
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     schema_column_formset = context['schema_column_formset']
-    #     self.object = form.save(commit=False)
-    #     schema_column_formset = self.get_modified_schema_column_formset(schema_column_formset)
-    #     if schema_column_formset.is_valid():
-    #         schema_column_formset.instance = self.object
-    #         formset_object = schema_column_formset.save(commit=False)
-    #         self.add_object_creator(self.object)
-    #         for obj in formset_object:
-    #             self.add_object_creator(obj)
-    #         schema_column_formset.save()
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        context = self.get_context_data()
+        schema_column_formset = context['schema_column_formset']
+
+        schema_column_formset = self.get_modified_schema_column_formset(schema_column_formset)
+        if schema_column_formset.is_valid():
+            self.object = form.save(commit=False)
+            self.add_object_creator(self.object)
+            schema_column_formset.instance = self.object
+            formset_object = schema_column_formset.save(commit=False)
+            for obj in formset_object:
+                self.add_object_creator(obj)
+            schema_column_formset.save()
+            return super().form_valid(form)
+        else:
+            form.add_error(error=schema_column_formset.errors, field=None)
+            return super().form_invalid(form)
+
 
     def get_schema_column_formset(self, context):
         raise NotImplementedError()
@@ -99,6 +86,24 @@ class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
         else:
             return SchemaColumnInlineFormset()
 
+    # def get(self, request, *args, **kwargs):
+    #     form_class = self.get_form_class()
+    #     form = self.get_form(form_class)
+    #     schema_column_formset = SchemaColumnInlineFormset()
+    #     return self.render_to_response(
+    #         self.get_context_data(form=form, schema_column_formset=schema_column_formset)
+    #     )
+    #
+    # def post(self, request, *args, **kwargs):
+    #     form_class = self.get_form_class()
+    #     form = self.get_form(form_class)
+    #     schema_column_formset = SchemaColumnInlineFormset(self.request.POST)
+    #     if form.is_valid() and schema_column_formset.is_valid():
+    #         return self.form_formset_valid(form, schema_column_formset)
+    #     return self.render_to_response(
+    #         self.get_context_data(form=form, schema_column_formset=schema_column_formset)
+    #     )
+
 
 class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
     pk_url_kwarg = 'schema_id'
@@ -125,5 +130,6 @@ class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
         return obj_list
 
     def get_modified_schema_column_formset(self, schema_column_formset):
+        print('************************', schema_column_formset)
         return schema_column_formset
 
