@@ -8,8 +8,6 @@
 
 {% block content-main %}
     <div class="container-fluid">
-
-
         <form method="post" class="form-group">
             {% csrf_token %}
 
@@ -57,11 +55,12 @@
                 {% endif %}
 
                 {% for column_form in schema_column_formset.forms %}
-
                     <div class="form-row" id="schema_column_form_0">
-                        <div >{{ column_form.DELETE }}</div>
+                        <div hidden>{{ column_form.DELETE }}</div>
+                        {# ========================= #}
                         {{ column_form.id }}
                         {# https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#using-the-formset-in-the-template  'Notice how we need to explicitly render {{ form.id }}. This ensures that the model formset, in the POST case, will work correctly. " #}
+                        {# ========================== #}
                         <div class="form-group col-md-3">
                             {{ column_form.name.label_tag }}
                             {{ column_form.name }}

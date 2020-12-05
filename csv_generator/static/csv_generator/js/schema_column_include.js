@@ -43,12 +43,11 @@ $(document).ready(() => {
     });
     // delete the schema column
     $("#schema-column").on("click", "button", function () {
-        // $column.attr("hidden",'true');
         let $del_element = $(this).parent().parent().first();
         let $del_checkbox = $del_element.find("input[type=checkbox]").prop('checked', true);
         let $del_id_field = $del_element.find("input[type=hidden]")
         if ($del_element.attr("id").split("_")[4] != 'new') {
-            $del_element.after($del_checkbox);
+            $del_element.after($del_checkbox.prop('hidden', true));
             $del_element.after($del_id_field);
         } else {
             let total_value = parseInt($('#id_schemacolumn_set-TOTAL_FORMS').val()) - 1;
