@@ -5,6 +5,7 @@ from csv_generator.models import Schema, SchemaColumn
 
 
 class SchemaColumnForm(forms.ModelForm):
+    # can_delete = forms.CheckboxInput()
     class Meta:
         model = SchemaColumn
         fields = ['name', 'type', 'from_field', 'to_field', 'order']
@@ -19,6 +20,8 @@ class SchemaColumnForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'required': False, 'min_value': 1, 'max_value': 100}),
             'order': forms.NumberInput(
                 attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
+            # 'can_delete': forms.CheckboxInput(
+            #     attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
         }
         labels = {
             'name': _('Column Name'),
@@ -39,7 +42,7 @@ class SchemaColumnForm(forms.ModelForm):
 
         if to_field or from_field:
             if not to_field or not from_field or to_field <= from_field:
-                msg = _('The "From:" or "To:" fields is not valid!')
+                msg = _('Field is not valid!')
                 self.add_error('to_field', msg)
                 self.add_error('from_field', msg)
         return cleaned_data
@@ -49,5 +52,6 @@ SchemaColumnInlineFormset = inlineformset_factory(
     Schema,
     SchemaColumn,
     form=SchemaColumnForm,
-    extra=1
+    extra=1,
+    fields=['name', 'type', 'from_field', 'to_field', 'order'],
 )

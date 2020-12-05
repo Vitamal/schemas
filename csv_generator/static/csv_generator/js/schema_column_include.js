@@ -2,20 +2,59 @@ $(document).ready(() => {
     $("#add_column").click(function () {
         let form_idx = $('#id_schemacolumn_set-TOTAL_FORMS').val();
         let $div = $('div[id^="schema_column_form_"]:last');
-        let num = parseInt($div.prop("id").match(/\d+/g), 10) + 1;
-        let $klon = $div.clone().prop('id', 'schema_column_form_' + num);
-        $klon.find("div #id_schemacolumn_set-0-name").prop("name", "schemacolumn_set-" + num + "-name")
-        $klon.find("div #id_schemacolumn_set-0-name").prop("value", "")
-        $klon.find("div #id_schemacolumn_set-0-type").prop("name", "schemacolumn_set-" + num + "-type")
-        $klon.find("div #id_schemacolumn_set-0-from_field").prop("name", "schemacolumn_set-" + num + "-from_field")
-        $klon.find("div #id_schemacolumn_set-0-from_field").prop("value", "")
-        $klon.find("div #id_schemacolumn_set-0-to_field").prop("name", "schemacolumn_set-" + num + "-to_field")
-        $klon.find("div #id_schemacolumn_set-0-to_field").prop("value", "")
-        $klon.find("div #id_schemacolumn_set-0-order").prop("name", "schemacolumn_set-" + num + "-order")
-        $klon.find("div #id_schemacolumn_set-0-order").prop("value", "")
+        let num = parseInt(form_idx) - 1;
+        let $klon = $div.clone().prop('id', 'schema_column_form_' + num + "_new");
+        $klon.find("div #id_schemacolumn_set-" + num + "-DELETE").attr({
+            name: "schemacolumn_set-" + form_idx + "-name",
+            id: "id_schemacolumn_set-" + form_idx + "-name",
+        })
+        $klon.find("#id_schemacolumn_set-" + num + "-id").attr({
+            name: "schemacolumn_set-" + form_idx + "-id",
+            id: "id_schemacolumn_set-" + form_idx + "-id",
+        })
+        $klon.find("div #id_schemacolumn_set-" + num + "-name").attr({
+            name: "schemacolumn_set-" + form_idx + "-name",
+            id: "id_schemacolumn_set-" + form_idx + "-name",
+            value: "",
+        })
+        $klon.find("div #id_schemacolumn_set-" + num + "-type").attr({
+            name: "schemacolumn_set-" + form_idx + "-type",
+            id: "id_schemacolumn_set-" + form_idx + "-type",
+            value: "",
+        })
+        $klon.find("div #id_schemacolumn_set-" + num + "-from_field").attr({
+            name: "schemacolumn_set-" + form_idx + "-from_field",
+            id: "id_schemacolumn_set-" + form_idx + "-from_field",
+            value: "",
+        })
+        $klon.find("div #id_schemacolumn_set-" + num + "-to_field").attr({
+            name: "schemacolumn_set-" + form_idx + "-to_field",
+            id: "id_schemacolumn_set-" + form_idx + "-to_field",
+            value: "",
+        })
+        $klon.find("div #id_schemacolumn_set-" + num + "-order").attr({
+            name: "schemacolumn_set-" + form_idx + "-order",
+            id: "id_schemacolumn_set-" + form_idx + "-order",
+            value: "",
+        })
         $div.after($klon);
-        $("[name=extra_field_count]").val(num);
         let new_value = parseInt(form_idx) + 1
         $('#id_schemacolumn_set-TOTAL_FORMS').prop("value", new_value);
     });
+    // delete the schema column
+    $("#schema-column").on("click", "button", function () {
+        // $column.attr("hidden",'true');
+        let $del_element = $(this).parent().parent().first();
+        let $del_checkbox = $del_element.find("input[type=checkbox]").prop('checked', true);
+        let $del_id_field = $del_element.find("input[type=hidden]")
+        if ($del_element.attr("id").split("_")[4] != 'new') {
+            $del_element.after($del_checkbox);
+            $del_element.after($del_id_field);
+        } else {
+            let total_value = parseInt($('#id_schemacolumn_set-TOTAL_FORMS').val()) - 1;
+            $('#id_schemacolumn_set-TOTAL_FORMS').prop("value", total_value);
+
+        };
+        $del_element.remove();
+    })
 });

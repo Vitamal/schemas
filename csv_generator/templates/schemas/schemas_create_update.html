@@ -44,53 +44,52 @@
                 </div>
             </div>
 
-            <div class="container mt-3">
+            <div class="container mt-3" id="schema-column">
                 <h3>{% translate 'Schema column' %}</h3>
                 {{ schema_column_formset.management_form }}
 
                 {% if schema_column_formset.errors %}
-                    {% for form in schema_column_formset %}
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <div class="alert alert-danger">
-                                    {{ error|escape }}
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endfor %}
                     {% for error in form.non_field_errors %}
                         <div class="alert alert-danger">
-                            {{ error|escape }}
+                            <small><b>{{ error|escape }}</b></small>
                         </div>
                     {% endfor %}
                 {% endif %}
 
                 {% for column_form in schema_column_formset.forms %}
+
                     <div class="form-row" id="schema_column_form_0">
+                        <div >{{ column_form.DELETE }}</div>
+                        {{ column_form.id }}
+                        {# https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#using-the-formset-in-the-template  'Notice how we need to explicitly render {{ form.id }}. This ensures that the model formset, in the POST case, will work correctly. " #}
                         <div class="form-group col-md-3">
                             {{ column_form.name.label_tag }}
                             {{ column_form.name }}
-                            <small>{{ column_form.name.errors }}</small>
+                            <small><b>{{ column_form.name.errors }}</b></small>
                         </div>
                         <div class="form-group col-md-3">
                             {{ column_form.type.label_tag }}
                             {{ column_form.type }}
-                            <small>{{ column_form.type.errors }}</small>
+                            <small><b>{{ column_form.type.errors }}</b></small>
                         </div>
                         <div class="form-group col-md-1">
                             {{ column_form.from_field.label_tag }}
                             {{ column_form.from_field }}
-                            <small>{{ column_form.from_field.errors }}</small>
+                            <small><b>{{ column_form.from_field.errors }}</b></small>
                         </div>
                         <div class="form-group col-md-1">
                             {{ column_form.to_field.label_tag }}
                             {{ column_form.to_field }}
-                            <small>{{ column_form.to_field.errors }}</small>
+                            <small><b>{{ column_form.to_field.errors }}</b></small>
                         </div>
                         <div class="form-group col-md-2">
                             {{ column_form.order.label_tag }}
                             {{ column_form.order }}
-                            <small>{{ column_form.order.errors }}</small>
+                            <small><b>{{ column_form.order.errors }}</b></small>
+                        </div>
+                        <div class="my-3">
+                            <button type="button" class="btn btn-danger mt-3"
+                                    id="del_column_0">{% trans 'Delete column' %}</button>
                         </div>
                     </div>
                 {% endfor %}

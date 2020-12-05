@@ -1,169 +1,45 @@
-{#{% extends 'navbar_page_template.html' %}#}
-{#{% load i18n %}#}
-{#{% load static %}#}
-{##}
-{#{% block header %}#}
-{#    <h2>{% translate 'New schema' %}</h2>#}
-{#{% endblock header %}#}
-{##}
-{#{% block content-main %}#}
-{#    <div class="container-fluid">#}
-{#        {% if schema_column_formset.errors %}#}
-{#            {% for form in schema_column_formset %}#}
-{#                {% for field in form %}#}
-{#                    {% for error in field.errors %}#}
-{#                        <div class="alert alert-danger">#}
-{#                            <strong>{{ error|escape }}</strong>#}
-{#                        </div>#}
-{#                    {% endfor %}#}
-{#                {% endfor %}#}
-{#            {% endfor %}#}
-{#            {% for error in form.non_field_errors %}#}
-{#                <div class="alert alert-danger">#}
-{#                    <strong>{{ error|escape }}</strong>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        {% endif %}#}
-{##}
-{#        <form method="post" class="form-group">#}
-{#            {% csrf_token %}#}
-{#            {{ schema_column_formset.management_form }}#}
-{#            {{ form.as_p }}#}
-{#            {{ schema_column_formset }}#}
-{#            <div class="my-3" id="add_button">#}
-{#                <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>#}
-{#            </div>#}
-{#        </form>#}
-{#        <div class="my-3" id="add_button">#}
-{#            <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock content-main %}#}
-{##}
-{#{% block includes-js %}#}
-{#    <script src="{% static 'csv_generator/js/schema_column_include.js' %}"></script>#}
-{#{% endblock includes-js %}#}
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
 
-<input type="hidden" name="schemacolumn_set-TOTAL_FORMS" value="1" id="id_schemacolumn_set-TOTAL_FORMS"><input
-        type="hidden" name="schemacolumn_set-INITIAL_FORMS" value="1" id="id_schemacolumn_set-INITIAL_FORMS"><input
-        type="hidden" name="schemacolumn_set-MIN_NUM_FORMS" value="0" id="id_schemacolumn_set-MIN_NUM_FORMS"><input
-        type="hidden" name="schemacolumn_set-MAX_NUM_FORMS" value="1000" id="id_schemacolumn_set-MAX_NUM_FORMS">
-<tr>
-    <td colspan="2">
-        <ul class="errorlist nonfield">
-            <li>(Hidden field id) This field is required.</li>
-        </ul>
-    </td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-name">Column Name:</label></th>
-    <td><input type="text" name="schemacolumn_set-0-name" value="column 1" class="form-control" required maxlength="100"
-               id="id_schemacolumn_set-0-name"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-type">Type:</label></th>
-    <td><select name="schemacolumn_set-0-type" class="form-control" required id="id_schemacolumn_set-0-type">
-        <option value="">---------</option>
+{% block header %}
+    <h2>{% translate 'New schema' %}</h2>
+{% endblock header %}
 
-        <option value="Full name">Full name</option>
+{% block content-main %}
+    <div class="container-fluid">
+        {% if schema_column_formset.errors %}
+            {% for form in schema_column_formset %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
 
-        <option value="Job" selected>Job</option>
+        <form method="post" class="form-group">
+            {% csrf_token %}
+            {{ schema_column_formset.management_form }}
+            {{ form.as_p }}
+            {{ schema_column_formset }}
+            <div class="my-3" id="add_button">
+                <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
+            </div>
+        </form>
+        <div class="my-3" id="add_button">
+            <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
+        </div>
+    </div>
+{% endblock content-main %}
 
-        <option value="Domain name">Domain name</option>
-
-        <option value="Phone number">Phone number</option>
-
-        <option value="Company name">Company name</option>
-
-        <option value="Text">Text</option>
-
-        <option value="Integer">Integer</option>
-
-        <option value="Address">Address</option>
-
-        <option value="Date">Date</option>
-
-    </select></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-from_field">From:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-from_field" class="form-control" min_value="0" max_value="100"
-               id="id_schemacolumn_set-0-from_field"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-to_field">To:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-to_field" class="form-control" min_value="1" max_value="100"
-               id="id_schemacolumn_set-0-to_field"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-order">Order:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-order" class="form-control" min_value="0" max_value="100"
-               id="id_schemacolumn_set-0-order"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-DELETE">Delete:</label></th>
-    <td><input type="checkbox" name="schemacolumn_set-0-DELETE" id="id_schemacolumn_set-0-DELETE"><input type="hidden"
-                                                                                                         name="schemacolumn_set-0-id"
-                                                                                                         id="id_schemacolumn_set-0-id"><input
-            type="hidden" name="schemacolumn_set-0-schema" id="id_schemacolumn_set-0-schema"></td>
-</tr>
-
-
-{#======================================================#}
-
-<input type="hidden" name="schemacolumn_set-TOTAL_FORMS" value="1" id="id_schemacolumn_set-TOTAL_FORMS"><input
-        type="hidden" name="schemacolumn_set-INITIAL_FORMS" value="0" id="id_schemacolumn_set-INITIAL_FORMS"><input
-        type="hidden" name="schemacolumn_set-MIN_NUM_FORMS" value="0" id="id_schemacolumn_set-MIN_NUM_FORMS"><input
-        type="hidden" name="schemacolumn_set-MAX_NUM_FORMS" value="1000" id="id_schemacolumn_set-MAX_NUM_FORMS">
-<tr>
-    <th><label for="id_schemacolumn_set-0-name">Column Name:</label></th>
-    <td><input type="text" name="schemacolumn_set-0-name" value="wqertsaerf" class="form-control" required
-               maxlength="100" id="id_schemacolumn_set-0-name"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-type">Type:</label></th>
-    <td><select name="schemacolumn_set-0-type" class="form-control" required id="id_schemacolumn_set-0-type">
-        <option value="">---------</option>
-
-        <option value="Full name" selected>Full name</option>
-
-        <option value="Job">Job</option>
-
-        <option value="Domain name">Domain name</option>
-
-        <option value="Phone number">Phone number</option>
-
-        <option value="Company name">Company name</option>
-
-        <option value="Text">Text</option>
-
-        <option value="Integer">Integer</option>
-
-        <option value="Address">Address</option>
-
-        <option value="Date">Date</option>
-
-    </select></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-from_field">From:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-from_field" class="form-control" min_value="0" max_value="100"
-               id="id_schemacolumn_set-0-from_field"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-to_field">To:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-to_field" class="form-control" min_value="1" max_value="100"
-               id="id_schemacolumn_set-0-to_field"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-order">Order:</label></th>
-    <td><input type="number" name="schemacolumn_set-0-order" class="form-control" min_value="0" max_value="100"
-               id="id_schemacolumn_set-0-order"></td>
-</tr>
-<tr>
-    <th><label for="id_schemacolumn_set-0-DELETE">Delete:</label></th>
-    <td><input type="checkbox" name="schemacolumn_set-0-DELETE" id="id_schemacolumn_set-0-DELETE"><input type="hidden"
-                                                                                                         name="schemacolumn_set-0-id"
-                                                                                                         id="id_schemacolumn_set-0-id"><input
-            type="hidden" name="schemacolumn_set-0-schema" id="id_schemacolumn_set-0-schema"></td>
-</tr>
+{% block includes-js %}
+    <script src="{% static 'csv_generator/js/schema_column_include.js' %}"></script>
+{% endblock includes-js %}
