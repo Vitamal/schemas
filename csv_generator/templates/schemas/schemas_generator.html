@@ -1,0 +1,53 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <h2>{% translate 'Data sets' %}</h2>
+        </div>
+        <div class="col-auto">
+            <form method="post">
+                {% csrf_token %}
+                <label for id="records_num">{% translate 'Rows:' %}</label>
+                <input type="number" max="10000" id="records_num" name="records_number">
+                <a href="{% url 'process_generate' %}">
+                    <button type="button" class="btn btn-success">{% translate 'Generate data' %}</button>
+                </a>
+            </form>
+        </div>
+    </div>
+{% endblock header %}
+
+{% block content-main %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% translate 'Title' %}</th>
+            <th scope="col">{% translate 'Created' %}</th>
+            <th scope="col">{% translate 'Status' %}</th>
+            <th scope="col">{% translate 'Action' %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for schema in schemas %}
+            <tr>
+                <th scope="row">{{ schema.id }}</th>
+                <td>{{ schema.name }}</td>
+                <td>{{ schema.created_datetime }}</td>
+                <td>
+                    <a href="#" class="btn btn-secondary disabled" role="button"
+                       aria-disabled="true">{% translate 'Proccessing' %}</a>
+                    <a href="#" class="btn btn-success disabled" role="button"
+                       aria-disabled="true">{% translate 'Ready' %}</a>
+                </td>
+                <td>
+                    <a href="{# {% url 'schemas_download' schema_id=schema.id %} #}">{% translate 'Download' %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content-main %}

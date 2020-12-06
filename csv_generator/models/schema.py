@@ -35,5 +35,7 @@ class Schema(BaseModel):
     )
     schema_column = models.JSONField(null=False, blank=True, default=dict)
 
+    status = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name

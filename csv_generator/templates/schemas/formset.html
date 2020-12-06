@@ -29,7 +29,16 @@
             {% csrf_token %}
             {{ schema_column_formset.management_form }}
             {{ form.as_p }}
-            {{ schema_column_formset }}
+            {% for column_form in schema_column_formset.forms %}
+                <div class="form-row" id="schema_column_form_0">
+                    {{ schema_column_formset.form }}
+                </div>
+            {% endfor %}
+                <div class="form-row" id="empty_form">
+                    <div class="form-group col-md-3">
+                    {{ schema_column_formset.empty_form }}
+                </div>
+                </div>
             <div class="my-3" id="add_button">
                 <button class="btn btn-primary" type="submit">{% trans 'Submit' %}</button>
             </div>

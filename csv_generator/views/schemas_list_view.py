@@ -1,10 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.views.generic import ListView
 
 from csv_generator.models import Schema
 from csv_generator.views.access_mixin import SchemasAccessMixin
 
-SCHEMAS_LIMIT_PER_PAGE = 20
+SCHEMAS_LIMIT_PER_PAGE =10
 
 
 class SchemasListView(SchemasAccessMixin, ListView):

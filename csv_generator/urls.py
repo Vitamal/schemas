@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from csv_generator.views import UserLoginView, SchemasListView, SchemaCreateView, SchemaDeleteView, \
-    SchemasLogoutView, SchemaUpdateView
+    SchemasLogoutView, SchemaUpdateView, SchemasToGenerateView
 
 urlpatterns = [
     path('login/', UserLoginView.as_view(), name='schemas_login'),
@@ -10,4 +10,6 @@ urlpatterns = [
     path('edit/<int:schema_id>', SchemaUpdateView.as_view(), name='schemas_edit'),
     path('delete/<int:schema_id>', SchemaDeleteView.as_view(), name='schemas_delete'),
     path('logout/', SchemasLogoutView.as_view(), name='logout'),
+    path('generator/', SchemasToGenerateView.as_view(), name='schemas_generator'),
+    path('generator/generate', SchemasToGenerateView.process_generate, name='process_generate'),
 ]

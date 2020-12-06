@@ -7,36 +7,36 @@ $(document).ready(() => {
         $klon.find("div #id_schemacolumn_set-" + num + "-DELETE").attr({
             name: "schemacolumn_set-" + form_idx + "-name",
             id: "id_schemacolumn_set-" + form_idx + "-name",
-        })
+        });
         $klon.find("#id_schemacolumn_set-" + num + "-id").attr({
             name: "schemacolumn_set-" + form_idx + "-id",
             id: "id_schemacolumn_set-" + form_idx + "-id",
-        })
+        });
         $klon.find("div #id_schemacolumn_set-" + num + "-name").attr({
             name: "schemacolumn_set-" + form_idx + "-name",
             id: "id_schemacolumn_set-" + form_idx + "-name",
             value: "",
-        })
+        });
         $klon.find("div #id_schemacolumn_set-" + num + "-type").attr({
             name: "schemacolumn_set-" + form_idx + "-type",
             id: "id_schemacolumn_set-" + form_idx + "-type",
             value: "",
-        })
+        });
         $klon.find("div #id_schemacolumn_set-" + num + "-from_field").attr({
             name: "schemacolumn_set-" + form_idx + "-from_field",
             id: "id_schemacolumn_set-" + form_idx + "-from_field",
             value: "",
-        })
+        });
         $klon.find("div #id_schemacolumn_set-" + num + "-to_field").attr({
             name: "schemacolumn_set-" + form_idx + "-to_field",
             id: "id_schemacolumn_set-" + form_idx + "-to_field",
             value: "",
-        })
+        });
         $klon.find("div #id_schemacolumn_set-" + num + "-order").attr({
             name: "schemacolumn_set-" + form_idx + "-order",
             id: "id_schemacolumn_set-" + form_idx + "-order",
             value: "",
-        })
+        });
         $div.after($klon);
         let new_value = parseInt(form_idx) + 1
         $('#id_schemacolumn_set-TOTAL_FORMS').prop("value", new_value);
@@ -55,5 +55,5 @@ $(document).ready(() => {
 
         };
         $del_element.remove();
-    })
+    });
 });
