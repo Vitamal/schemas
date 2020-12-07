@@ -5,4 +5,4 @@ from .schema_create_update_view import SchemaUpdateView
 from .schema_delete import SchemaDeleteView
 from .logout_view import SchemasLogoutView
 from .schemas_to_generate import SchemasToGenerateView
-from .schemas_to_generate import SchemasToGenerateView
+from .schemas_generator import process_generate

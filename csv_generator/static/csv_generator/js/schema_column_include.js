@@ -35,7 +35,7 @@ $(document).ready(() => {
         $klon.find("div #id_schemacolumn_set-" + num + "-order").attr({
             name: "schemacolumn_set-" + form_idx + "-order",
             id: "id_schemacolumn_set-" + form_idx + "-order",
-            value: "",
+            value: form_idx,
         });
         $div.after($klon);
         let new_value = parseInt(form_idx) + 1

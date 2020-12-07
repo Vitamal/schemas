@@ -5,7 +5,6 @@ from csv_generator.models import Schema, SchemaColumn
 
 
 class SchemaColumnForm(forms.ModelForm):
-    # can_delete = forms.CheckboxInput()
     class Meta:
         model = SchemaColumn
         fields = ['name', 'type', 'from_field', 'to_field', 'order']
@@ -15,13 +14,11 @@ class SchemaColumnForm(forms.ModelForm):
             'type': forms.Select(
                 attrs={'class': 'form-control', 'required': True}),
             'from_field': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 1000}),
             'to_field': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 1, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 1, 'max_value': 1000}),
             'order': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
-            # 'can_delete': forms.CheckboxInput(
-            #     attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 1000}),
         }
         labels = {
             'name': _('Column Name'),

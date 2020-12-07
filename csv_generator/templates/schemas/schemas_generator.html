@@ -8,13 +8,11 @@
             <h2>{% translate 'Data sets' %}</h2>
         </div>
         <div class="col-auto">
-            <form method="post">
+            <form action="{% url 'process_generate' %}" method="post">
                 {% csrf_token %}
-                <label for id="records_num">{% translate 'Rows:' %}</label>
+                <label for="id_records_num">{% translate 'Rows:' %}</label>
                 <input type="number" max="10000" id="records_num" name="records_number">
-                <a href="{% url 'process_generate' %}">
-                    <button type="button" class="btn btn-success">{% translate 'Generate data' %}</button>
-                </a>
+                <button type="submit" class="btn btn-success">{% translate 'Generate data' %}</button>
             </form>
         </div>
     </div>

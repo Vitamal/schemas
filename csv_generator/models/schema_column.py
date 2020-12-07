@@ -37,7 +37,7 @@ class SchemaColumn(BaseModel):
     to_field = models.IntegerField(null=True, blank=True, verbose_name='to_field',
                                    validators=[MinValueValidator(0), MaxValueValidator(1000)])
 
-    order = models.IntegerField(null=True, blank=True, verbose_name='order',
+    order = models.IntegerField(null=True, blank=True, verbose_name='order', default=0,
                                 validators=[MinValueValidator(0), MaxValueValidator(1000)])
 
     schema = models.ForeignKey('csv_generator.Schema', on_delete=models.CASCADE)

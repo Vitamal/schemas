@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 
-from csv_generator.forms import RowForm
 from csv_generator.models import Schema
 from csv_generator.views.access_mixin import SchemasAccessMixin
 
@@ -16,13 +14,4 @@ class SchemasToGenerateView(SchemasAccessMixin, ListView):
     ordering = ['id']
 
     def get_queryset(self):
-        return Schema.objects.filter(created_by=self.request.user)
-
-    def process_generate(self, request, *args, **kwargs):
-        if request.method == 'GET':
-            return render(request, {'form': RowForm})
-        elif request.method == 'POST':
-            form = RowForm(request.POST, request.FILES)
-            if form.is_valid():
-                print('++++++++++++++++++++++', request.POST)
-
+        return Schema.objects.filter(created_by=self.request.user, status=False)
