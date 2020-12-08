@@ -9,7 +9,7 @@ def process_generate(request):
     if request.method == 'GET':
         return HttpResponseRedirect(request.path_info)
     elif request.method == 'POST':
-        records_number = request.POST['records_number']
+        records_number = int(request.POST['records_number'])
         schemas = Schema.objects.filter(created_by=request.user, status=False)
         for schema in schemas:
             schema_columns = SchemaColumn.objects.filter(schema=schema).values_list('name', 'type', 'from_field',
@@ -26,6 +26,8 @@ def process_generate(request):
                 column['to_field'] = item.to_field
                 column['order'] = item.order
                 column_list.append(column)
-            column_list = sorted(column_list, key = lambda i: i['order'])
-            generator_to_csv(schema_name, column_separator, string_character, column_list)
+            column_list = sorted(column_list, key=lambda i: i['order'])
+            generator_to_csv(records_number, schema_name, column_separator, string_character, column_list)
+            schema.status = True
+            schema.save()
         return redirect('schemas_generator')

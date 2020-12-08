@@ -14,4 +14,4 @@ class SchemasToGenerateView(SchemasAccessMixin, ListView):
     ordering = ['id']
 
     def get_queryset(self):
-        return Schema.objects.filter(created_by=self.request.user, status=False)
+        return Schema.objects.filter(created_by=self.request.user)

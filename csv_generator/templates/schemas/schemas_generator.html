@@ -36,10 +36,13 @@
                 <td>{{ schema.name }}</td>
                 <td>{{ schema.created_datetime }}</td>
                 <td>
-                    <a href="#" class="btn btn-secondary disabled" role="button"
-                       aria-disabled="true">{% translate 'Proccessing' %}</a>
-                    <a href="#" class="btn btn-success disabled" role="button"
-                       aria-disabled="true">{% translate 'Ready' %}</a>
+                    {% if schema.status == False %}
+                        <a href="#" class="btn btn-secondary disabled" role="button"
+                           aria-disabled="true">{% translate 'Proccessing' %}</a>
+                    {% else %}
+                        <a href="#" class="btn btn-success disabled" role="button"
+                           aria-disabled="true">{% translate 'Ready' %}</a>
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{# {% url 'schemas_download' schema_id=schema.id %} #}">{% translate 'Download' %}</a>
