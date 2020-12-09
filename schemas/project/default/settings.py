@@ -133,3 +133,5 @@ LOGIN_REDIRECT_URL = 'schemas_list'  # URL redirecting after a successful authen
 LOGIN_URL = '/login/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'

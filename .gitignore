@@ -5,6 +5,7 @@
 .*.swp
 .*.swo
 *~
+*.csv
 .DS_Store
 *.sqlite
 *.sqlite3

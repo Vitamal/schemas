@@ -56,4 +56,9 @@ $(document).ready(() => {
         };
         $del_element.remove();
     });
+    // add 'from' 'to' fields
+    $("select").change( function () {
+        // $(this).closest('.from_to')[$(this).val() == 'Integer' ? 'show' : 'hide']();
+        console.log('********************')
+    });
 });

@@ -71,15 +71,17 @@
                             {{ column_form.type }}
                             <small><b>{{ column_form.type.errors }}</b></small>
                         </div>
-                        <div class="form-group col-md-1">
-                            {{ column_form.from_field.label_tag }}
-                            {{ column_form.from_field }}
-                            <small><b>{{ column_form.from_field.errors }}</b></small>
-                        </div>
-                        <div class="form-group col-md-1">
-                            {{ column_form.to_field.label_tag }}
-                            {{ column_form.to_field }}
-                            <small><b>{{ column_form.to_field.errors }}</b></small>
+                        <div class="from_to" style="display:none;">
+                            <div class="form-group col-md-1">
+                                {{ column_form.from_field.label_tag }}
+                                {{ column_form.from_field }}
+                                <small><b>{{ column_form.from_field.errors }}</b></small>
+                            </div>
+                            <div class="form-group col-md-1">
+                                {{ column_form.to_field.label_tag }}
+                                {{ column_form.to_field }}
+                                <small><b>{{ column_form.to_field.errors }}</b></small>
+                            </div>
                         </div>
                         <div class="form-group col-md-2">
                             {{ column_form.order.label_tag }}

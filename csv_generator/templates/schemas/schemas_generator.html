@@ -23,20 +23,18 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">{% translate 'Title' %}</th>
             <th scope="col">{% translate 'Created' %}</th>
             <th scope="col">{% translate 'Status' %}</th>
             <th scope="col">{% translate 'Action' %}</th>
         </tr>
         </thead>
         <tbody>
-        {% for schema in schemas %}
+        {% for generated_scheme in generated_schemas %}
             <tr>
-                <th scope="row">{{ schema.id }}</th>
-                <td>{{ schema.name }}</td>
-                <td>{{ schema.created_datetime }}</td>
+                <th scope="row">{{ generated_scheme.id }}</th>
+                <td>{{ generated_scheme.created_datetime }}</td>
                 <td>
-                    {% if schema.status == False %}
+                    {% if generated_scheme.status == False %}
                         <a href="#" class="btn btn-secondary disabled" role="button"
                            aria-disabled="true">{% translate 'Proccessing' %}</a>
                     {% else %}
@@ -45,7 +43,13 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{# {% url 'schemas_download' schema_id=schema.id %} #}">{% translate 'Download' %}</a>
+{#                    <a href="{% url 'data_view' schema_id=schema.id %}">{% translate 'Download' %}</a>#}
+                    <form method="post" enctype="multipart/form-data" action="{% url 'data_view' %}">
+                        {% csrf_token %}
+                        <input hidden type="file" name="csv_file" value="/home/clip/PycharmProjects/schemas/media/schema 3.csv"/>
+                        <p>{{ MEDIA_URL }}{{ schema.name }}.csv</p>
+                        <input type="submit" name="submit" value="Upload"/>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

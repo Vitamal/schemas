@@ -6,3 +6,4 @@ from .schema_delete import SchemaDeleteView
 from .logout_view import SchemasLogoutView
 from .schemas_to_generate import SchemasToGenerateView
 from .schemas_generator import process_generate
+from .csv_data_view import data_view
