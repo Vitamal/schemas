@@ -33,7 +33,7 @@
                 <td>{{ schema.changed_datetime }}</td>
                 <td>
                     <a href="{% url 'schemas_edit' schema_id=schema.id %}" class="ml-3">{% translate 'Edit' %}</a>
-                    <a href="{% url 'schemas_generator' schema_id=schema.id %}" class="ml-3">{% trans 'Generate' %}</a>
+                    <a href="{% url 'schema_to_generate' schema_id=schema.id %}" class="ml-3">{% trans 'Generate' %}</a>
                     <a href="{% url 'schemas_delete' schema_id=schema.id %}"
                        class="text-danger ml-3">{% translate 'Delete' %}</a>
                 </td>
