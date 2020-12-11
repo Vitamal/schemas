@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
-from csv_generator.models import Schema, SchemaColumn, GeneratedScheme
-from csv_generator.utils.generator import generator_to_csv
+from csv_generator.models import Schema, SchemaColumn, GeneratedFile
+from csv_generator.tasks import generator_to_csv
 
 
 def process_generate(request):
@@ -20,14 +20,11 @@ def process_generate(request):
             string_character = schema.string_character
             column_list = []
             for item in schema_columns:
-                column = {}
-                column['column_name'] = item.name
-                column['type'] = item.type
-                column['from_field'] = item.from_field
-                column['to_field'] = item.to_field
-                column['order'] = item.order
+                column = {'column_name': item.name, 'type': item.type, 'from_field': item.from_field,
+                          'to_field': item.to_field, 'order': item.order}
                 column_list.append(column)
             column_list = sorted(column_list, key=lambda i: i['order'])
             file_name = generator_to_csv(records_number, schema_name, column_separator, string_character, column_list)
-            generated_schema = GeneratedScheme.objects.create(schema=schema, is_generated=True, file=file_name)
-    return redirect('schema_to_generate')
+            generated_schema = GeneratedFile.objects.create(schema=schema, is_generated=True, file_name=file_name)
+            print('+++++++++++++++++++', generated_schema.file_name)
+        return redirect('schema_to_generate', schema_id=schema_id)

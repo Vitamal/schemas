@@ -44,12 +44,12 @@
                     {% endif %}
                 </td>
                 <td>
-{#                    <a href="{% url 'data_view' schema_id=schema.id %}">{% translate 'Download' %}</a>#}
-                    <form method="post" enctype="multipart/form-data" action="{% url 'data_view' %}">
-                        {% csrf_token %}
-                        <input hidden type="file" name="csv_file" value="/home/clip/PycharmProjects/schemas/media/schema 3.csv"/>
-                        <p>{{ MEDIA_URL }}{{ schema.name }}.csv</p>
-                        <input type="submit" name="submit" value="Upload"/>
+                    <a href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Download' %}</a>
+{#                    <form method="post" enctype="multipart/form-data" action="{% url 'data_view' %}">#}
+{#                        {% csrf_token %}#}
+{#                        <input hidden type="file" name="csv_file" value="/home/clip/PycharmProjects/schemas/media/schema 3.csv"/>#}
+{#                        <p>{{ MEDIA_URL }}{{ schema.name }}.csv</p>#}
+{#                        <input type="submit" name="submit" value="Upload"/>#}
                     </form>
                 </td>
             </tr>

@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from csv_generator.models import GeneratedScheme, Schema
+from csv_generator.models import GeneratedFile, Schema
 from csv_generator.views.access_mixin import SchemasAccessMixin
 
 SCHEMAS_LIMIT_PER_PAGE = 10
@@ -8,7 +8,7 @@ SCHEMAS_LIMIT_PER_PAGE = 10
 
 class SchemasToGenerateView(SchemasAccessMixin, ListView):
     context_object_name = 'generated_schemas'
-    model = GeneratedScheme
+    model = GeneratedFile
     template_name = 'schemas/schemas_generator.html'
     paginate_by = SCHEMAS_LIMIT_PER_PAGE
     ordering = ['id']
@@ -17,7 +17,7 @@ class SchemasToGenerateView(SchemasAccessMixin, ListView):
         return self.kwargs.get('schema_id')
 
     def get_queryset(self):
-        return GeneratedScheme.objects.filter(schema=Schema.objects.get(id=self.get_schema_id()))
+        return GeneratedFile.objects.filter(schema=Schema.objects.get(id=self.get_schema_id()))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()

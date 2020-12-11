@@ -12,5 +12,5 @@ urlpatterns = [
     path('logout/', SchemasLogoutView.as_view(), name='logout'),
     path('generator/<int:schema_id>', SchemasToGenerateView.as_view(), name='schema_to_generate'),
     path('process_generate/', process_generate, name='process_generate'),
-    path('scv_data/', data_view, name='data_view'),
+    path('scv_data/<int:generated_scheme_id>', data_view, name='data_view'),
 ]

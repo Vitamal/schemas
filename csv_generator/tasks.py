@@ -2,8 +2,11 @@
 the utility to generate fake csv file
 """
 import csv
+import time
+
 from faker import Faker
 
+from schemas.celery import app
 from schemas.project.default.settings import MEDIA_ROOT
 
 FULL_NAME = 'Full name'
@@ -44,7 +47,7 @@ def fake_data_generator(num, column_type, from_nam, to_num):
         raise Exception("Sorry, the column data type is unknown.")
     return item_list
 
-
+@app.task
 def generator_to_csv(records_number, schema_name, column_separator, string_character, column_list):
     csv.register_dialect('scheme_dialect', delimiter=column_separator, quotechar=string_character)
     column_name_list = [item['column_name'] for item in column_list]
@@ -54,7 +57,8 @@ def generator_to_csv(records_number, schema_name, column_separator, string_chara
         item_list = fake_data_generator(records_number, item['type'], item['from_field'], item['to_field'])
         list_of_columns.append(item_list)
     data_rows = list(zip(*list_of_columns))
-    file_name = "{}/{}.csv".format(MEDIA_ROOT, schema_name)
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    file_name = "{}/{}_{}.csv".format(MEDIA_ROOT, schema_name, timestr)
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file, 'scheme_dialect')
         writer.writerow(column_name_list)
