@@ -8,15 +8,13 @@
             <h2>{% translate 'Data schemas' %}</h2>
         </div>
         <div class="col-auto">
-            <a href="{% url 'schemas_create' %}">
-                <button type="button" class="btn btn-success">{% translate 'Data table' %}</button>
-            </a>
+            <input type=button class="btn btn-success" value="Back to Data sets" onClick="javascript:history.go(-1);">
         </div>
     </div>
 {% endblock header %}
 
 {% block content-main %}
     <table class="table table-bordered">
-        {{ loaded_data }}
+        {{ loaded_data | safe }}
     </table>
 {% endblock content-main %}

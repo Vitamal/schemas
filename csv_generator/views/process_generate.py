@@ -1,3 +1,5 @@
+import time
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
@@ -24,7 +26,8 @@ def process_generate(request):
                           'to_field': item.to_field, 'order': item.order}
                 column_list.append(column)
             column_list = sorted(column_list, key=lambda i: i['order'])
-            file_name = generator_to_csv(records_number, schema_name, column_separator, string_character, column_list)
-            generated_schema = GeneratedFile.objects.create(schema=schema, is_generated=True, file_name=file_name)
-            print('+++++++++++++++++++', generated_schema.file_name)
+            task = generator_to_csv.delay(records_number, schema_name, schema_id, column_separator, string_character, column_list)
+            print("+++++++++++++++++", task.id, task.status)
+            time.sleep(5)
+            print("+++++++++++++++++", task.id, task.status)
         return redirect('schema_to_generate', schema_id=schema_id)

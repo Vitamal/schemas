@@ -3,11 +3,15 @@ the utility to generate fake csv file
 """
 import csv
 import time
+from pathlib import Path
 
 from faker import Faker
 
+from celery import shared_task
+
+from csv_generator.models import GeneratedFile, Schema
 from schemas.celery import app
-from schemas.project.default.settings import MEDIA_ROOT
+from schemas.project.default.settings import MEDIA_ROOT, BASE_DIR
 
 FULL_NAME = 'Full name'
 JOB = 'Job'
@@ -47,8 +51,9 @@ def fake_data_generator(num, column_type, from_nam, to_num):
         raise Exception("Sorry, the column data type is unknown.")
     return item_list
 
-@app.task
-def generator_to_csv(records_number, schema_name, column_separator, string_character, column_list):
+
+@shared_task
+def generator_to_csv(records_number, schema_name, schema_id, column_separator, string_character, column_list):
     csv.register_dialect('scheme_dialect', delimiter=column_separator, quotechar=string_character)
     column_name_list = [item['column_name'] for item in column_list]
     column_type_list = [item['type'] for item in column_list]
@@ -59,8 +64,17 @@ def generator_to_csv(records_number, schema_name, column_separator, string_chara
     data_rows = list(zip(*list_of_columns))
     timestr = time.strftime("%Y%m%d-%H%M%S")
     file_name = "{}/{}_{}.csv".format(MEDIA_ROOT, schema_name, timestr)
+
+    # make the directory if it isn`t exit
+    Path("{}/media".format(BASE_DIR)).mkdir(parents=True, exist_ok=True)
+
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file, 'scheme_dialect')
         writer.writerow(column_name_list)
         writer.writerows(data_rows)
+
+    # creating generated file instance
+    schema = Schema.objects.get()
+    GeneratedFile.objects.create(schema=schema, is_generated=True, file_name=file_name)
+
     return file_name
