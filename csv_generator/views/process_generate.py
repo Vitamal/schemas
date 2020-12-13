@@ -26,8 +26,10 @@ def process_generate(request):
                           'to_field': item.to_field, 'order': item.order}
                 column_list.append(column)
             column_list = sorted(column_list, key=lambda i: i['order'])
-            task = generator_to_csv.delay(records_number, schema_name, schema_id, column_separator, string_character, column_list)
-            print("+++++++++++++++++", task.id, task.status)
-            time.sleep(5)
-            print("+++++++++++++++++", task.id, task.status)
+
+            # creating generated file instance
+            generated_item = GeneratedFile.objects.create(schema=schema)
+            task = generator_to_csv.delay(records_number, schema_name, generated_item.id, column_separator, string_character, column_list)
+            print('==========================', task.status)
+
         return redirect('schema_to_generate', schema_id=schema_id)

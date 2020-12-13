@@ -30,12 +30,12 @@
         </tr>
         </thead>
         <tbody>
-        {% for generated_scheme in generated_schemas %}
+        {% for generated_scheme in generated_files %}
             <tr>
                 <th scope="row">{{ generated_scheme.id }}</th>
                 <td>{{ generated_scheme.created_datetime }}</td>
                 <td>
-                    {% if generated_scheme.status == False %}
+                    {% if generated_scheme.is_generated == False %}
                         <a href="#" class="btn btn-secondary disabled" role="button"
                            aria-disabled="true">{% translate 'Proccessing' %}</a>
                     {% else %}
@@ -50,7 +50,7 @@
 {#                        <input hidden type="file" name="csv_file" value="/home/clip/PycharmProjects/schemas/media/schema 3.csv"/>#}
 {#                        <p>{{ MEDIA_URL }}{{ schema.name }}.csv</p>#}
 {#                        <input type="submit" name="submit" value="Upload"/>#}
-                    </form>
+{#                    </form>#}
                 </td>
             </tr>
         {% endfor %}

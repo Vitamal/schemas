@@ -7,7 +7,7 @@ SCHEMAS_LIMIT_PER_PAGE = 10
 
 
 class SchemasToGenerateView(SchemasAccessMixin, ListView):
-    context_object_name = 'generated_schemas'
+    context_object_name = 'generated_files'
     model = GeneratedFile
     template_name = 'schemas/schemas_generator.html'
     paginate_by = SCHEMAS_LIMIT_PER_PAGE
