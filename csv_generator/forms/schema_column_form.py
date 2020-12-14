@@ -49,6 +49,6 @@ SchemaColumnInlineFormset = inlineformset_factory(
     Schema,
     SchemaColumn,
     form=SchemaColumnForm,
-    extra=1,
+    extra=0,
     fields=['name', 'type', 'from_field', 'to_field', 'order'],
 )

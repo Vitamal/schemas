@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    // add the schema column
     $("#add_column").click(function () {
         let form_idx = $('#id_schemacolumn_set-TOTAL_FORMS').val();
         let $div = $('div[id^="schema_column_form_"]:last');
@@ -53,12 +54,25 @@ $(document).ready(() => {
             let total_value = parseInt($('#id_schemacolumn_set-TOTAL_FORMS').val()) - 1;
             $('#id_schemacolumn_set-TOTAL_FORMS').prop("value", total_value);
 
-        };
+        }
+        ;
         $del_element.remove();
     });
+});
+$(document).ready(() => {
     // add 'from' 'to' fields
-    $("select").change( function () {
+    $("select").change(function () {
         // $(this).closest('.from_to')[$(this).val() == 'Integer' ? 'show' : 'hide']();
-        console.log('********************')
+        if ($(this).children("option:selected").val() == 'Integer') {
+            console.log('Interger field')
+            console.dir($(this))
+            $('.from').show()
+            $('.to').show()
+        } else {
+            $('.from').hide()
+            $('.to').hide()
+        };
+        console.log('********************', $(this));
     });
 });
+

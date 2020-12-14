@@ -10,7 +10,7 @@ from csv_generator.views.access_mixin import SchemasAccessMixin
 
 class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
     model = Schema
-    template_name = 'schemas/schemas_create_update.html'
+    # template_name = 'schemas/schemas_create_update.html'
     context_object_name = 'schema'
     object = None
     form_class = SchemaForm
@@ -53,7 +53,7 @@ class SchemaCreateUpdateMixin(SchemasAccessMixin, ModelFormMixin):
 
 
 class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
-
+    template_name = 'schemas/add_schema.html'
     def get_schema_column_formset(self, context):
         if self.request.POST:
             return SchemaColumnInlineFormset(self.request.POST)
@@ -63,7 +63,7 @@ class SchemaCreateView(SchemaCreateUpdateMixin, CreateView):
 
 class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
     pk_url_kwarg = 'schema_id'
-
+    template_name = 'schemas/edit_schema.html'
     def get_schema_column_formset(self, context):
         schema = self.get_object()
         if self.request.POST:
