@@ -4,11 +4,11 @@ $(document).ready(() => {
         let form_idx = $('#id_schemacolumn_set-TOTAL_FORMS').val();
         let $div = $('div[id="empty_formset"]');
         let $klon = $div.clone().html().replace(/__prefix__/g, form_idx);
-
-        $('#endform').before($klon);
-        let new_value = parseInt(form_idx) + 1
+        let new_value = parseInt(form_idx) + 1;
         $('#id_schemacolumn_set-TOTAL_FORMS').prop("value", new_value);
-    });
+        $('#endform').before($klon);
+        $("#schema-column").find("input[id$='-order']:last").prop('value', new_value);
+   });
 
     // delete the schema column
     $("#schema-column").on("click", "button", function () {
@@ -21,7 +21,7 @@ $(document).ready(() => {
     });
 
     // add 'from' & 'to' fields
-    $("#schema-column").on("change", "select",function () {
+    $("#schema-column").on("change", "select", function () {
         if ($(this).children("option:selected").val() == 'Integer') {
             $(this).parent().next().show();
             $(this).parent().next().next().show();

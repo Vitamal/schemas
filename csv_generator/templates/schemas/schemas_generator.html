@@ -8,7 +8,7 @@
             <h2>{% translate 'Data sets' %}</h2>
         </div>
         <div class="col-auto">
-            <form action="{% url 'process_generate'%}" method="post">
+            <form action="{% url 'process_generate' %}" method="post">
                 {% csrf_token %}
                 <label for="id_records_num">{% translate 'Rows:' %}</label>
                 <input type="number" max="10000" id="records_num" name="records_number">
@@ -29,7 +29,7 @@
             <th scope="col">{% translate 'Action' %}</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="mydiv">
         {% for generated_scheme in generated_files %}
             <tr>
                 <th scope="row">{{ generated_scheme.id }}</th>
@@ -45,15 +45,10 @@
                 </td>
                 <td>
                     <a href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Download' %}</a>
-{#                    <form method="post" enctype="multipart/form-data" action="{% url 'data_view' %}">#}
-{#                        {% csrf_token %}#}
-{#                        <input hidden type="file" name="csv_file" value="/home/clip/PycharmProjects/schemas/media/schema 3.csv"/>#}
-{#                        <p>{{ MEDIA_URL }}{{ schema.name }}.csv</p>#}
-{#                        <input type="submit" name="submit" value="Upload"/>#}
-{#                    </form>#}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 {% endblock content-main %}
+

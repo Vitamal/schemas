@@ -7,6 +7,9 @@ SCHEMAS_LIMIT_PER_PAGE = 10
 
 
 class SchemasToGenerateView(SchemasAccessMixin, ListView):
+    """
+    the view with all generated_files instances  and with form to generate new file
+    """
     context_object_name = 'generated_files'
     model = GeneratedFile
     template_name = 'schemas/schemas_generator.html'

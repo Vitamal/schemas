@@ -8,6 +8,9 @@ from csv_generator.tasks import generator_to_csv
 
 
 def process_generate(request):
+    """
+    the view to generate csv file from the scheme and to create generated_file model instance
+    """
     if request.method == 'GET':
         return HttpResponseRedirect(request.path_info)
     elif request.method == 'POST':
@@ -29,7 +32,8 @@ def process_generate(request):
 
             # creating generated file instance
             generated_item = GeneratedFile.objects.create(schema=schema)
-            task = generator_to_csv.delay(records_number, schema_name, generated_item.id, column_separator, string_character, column_list)
+            task = generator_to_csv.delay(records_number, schema_name, generated_item.id, column_separator,
+                                          string_character, column_list)
             print('==========================', task.status)
 
         return redirect('schema_to_generate', schema_id=schema_id)

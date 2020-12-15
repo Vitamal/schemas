@@ -76,7 +76,7 @@ class SchemaUpdateView(SchemaCreateUpdateMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         """
-            Add variable to the context_data to change template for edit view.
+            Add variable to the context_data to use part of template for edit view only.
         """
         context = super().get_context_data(**kwargs)
         context['edit'] = self.get_schema_column_formset(context)

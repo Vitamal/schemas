@@ -5,6 +5,10 @@ from django.urls import reverse
 
 
 class UserLoginView(LoginView):
+    """
+    Provides users the ability to login
+    """
+
     template_name = 'authentication/login.html'
     redirect_field_name = REDIRECT_FIELD_NAME
     redirect_authenticated_user = True

@@ -1,10 +1,13 @@
 import pandas as pd
 from django.shortcuts import render
 
-from csv_generator.models import GeneratedFile, Schema
+from csv_generator.models import GeneratedFile
 
 
 def data_view(request, generated_scheme_id):
+    """
+    the view to show generated csv file in html page
+    """
     generated_file = GeneratedFile.objects.get(id=generated_scheme_id)
     schema = generated_file.schema
     file_path = generated_file.file_name
