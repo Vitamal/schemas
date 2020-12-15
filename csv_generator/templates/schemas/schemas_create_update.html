@@ -54,52 +54,95 @@
                     {% endfor %}
                 {% endif %}
 
-                {% for column_form in schema_column_formset.forms %}
-                    <div class="form-row" id="schema_column_form_0">
-                        <div hidden>{{ column_form.DELETE }}</div>
-                        {# ========================= #}
-                        {{ column_form.id }}
-                        {# https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#using-the-formset-in-the-template  'Notice how we need to explicitly render {{ form.id }}. This ensures that the model formset, in the POST case, will work correctly. " #}
-                        {# ========================== #}
-                        <div class="form-group col-md-3">
-                            {{ column_form.name.label_tag }}
-                            {{ column_form.name }}
-                            <small><b>{{ column_form.name.errors }}</b></small>
+                {% if edit %}
+                    {% for column_form in schema_column_formset.forms %}
+                        <div class="form-row">
+                            <div hidden>{{ column_form.DELETE }}</div>
+                            {# ========================= #}
+                            {{ column_form.id }}
+                            {# https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#using-the-formset-in-the-template  'Notice how we need to explicitly render {{ form.id }}. This ensures that the model formset, in the POST case, will work correctly. " #}
+                            {# ========================== #}
+                            <div class="form-group col-md-3">
+                                {{ column_form.name.label_tag }}
+                                {{ column_form.name }}
+                                <small><b>{{ column_form.name.errors }}</b></small>
+                            </div>
+                            <div class="form-group col-md-3">
+                                {{ column_form.type.label_tag }}
+                                {{ column_form.type }}
+                                <small><b>{{ column_form.type.errors }}</b></small>
+                            </div>
+                            <div class="from form-group col-md-1" style="display:none;">
+                                {{ column_form.from_field.label_tag }}
+                                {{ column_form.from_field }}
+                                <small><b>{{ column_form.from_field.errors }}</b></small>
+                            </div>
+                            <div class="to form-group col-md-1" style="display:none;">
+                                {{ column_form.to_field.label_tag }}
+                                {{ column_form.to_field }}
+                                <small><b>{{ column_form.to_field.errors }}</b></small>
+                            </div>
+                            <div class="form-group col-md-2">
+                                {{ column_form.order.label_tag }}
+                                {{ column_form.order }}
+                                <small><b>{{ column_form.order.errors }}</b></small>
+                            </div>
+                            <div class="my-3">
+                                <button type="button" class="btn btn-danger mt-3">{% trans 'Delete column' %}</button>
+                            </div>
                         </div>
-                        <div class="form-group col-md-3">
-                            {{ column_form.type.label_tag }}
-                            {{ column_form.type }}
-                            <small><b>{{ column_form.type.errors }}</b></small>
-                        </div>
-                        <div class="from form-group col-md-1" style="display:none;">
-                            {{ column_form.from_field.label_tag }}
-                            {{ column_form.from_field }}
-                            <small><b>{{ column_form.from_field.errors }}</b></small>
-                        </div>
-                        <div class="to form-group col-md-1" style="display:none;">
-                            {{ column_form.to_field.label_tag }}
-                            {{ column_form.to_field }}
-                            <small><b>{{ column_form.to_field.errors }}</b></small>
-                        </div>
-                        <div class="form-group col-md-2">
-                            {{ column_form.order.label_tag }}
-                            {{ column_form.order }}
-                            <small><b>{{ column_form.order.errors }}</b></small>
-                        </div>
-                        <div class="my-3">
-                            <button type="button" class="btn btn-danger mt-3"
-                                    id="del_column_0">{% trans 'Delete column' %}</button>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
+                <div id="endform">{# to insert new column here #}</div>
             </div>
         </form>
         <div class="my-3" id="add_button">
             <button class="btn btn-primary" id="add_column">{% trans 'Add column' %}</button>
         </div>
+        {% with column_form=schema_column_formset.empty_form %}
+            <div hidden id="empty_formset">
+                <div class="form-row" id="id_schemacolumn_set-__prefix__-form">
+                    <div hidden>{{ column_form.DELETE }}</div>
+                    {# ========================= #}
+                    {{ column_form.id }}
+                    {# https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#using-the-formset-in-the-template  'Notice how we need to explicitly render {{ form.id }}. This ensures that the model formset, in the POST case, will work correctly. " #}
+                    {# ========================== #}
+                    <div class="form-group col-md-3">
+                        {{ column_form.name.label_tag }}
+                        {{ column_form.name }}
+                        <small><b>{{ column_form.name.errors }}</b></small>
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ column_form.type.label_tag }}
+                        {{ column_form.type }}
+                        <small><b>{{ column_form.type.errors }}</b></small>
+                    </div>
+                    <div class="from form-group col-md-1" style="display:none;">
+                        {{ column_form.from_field.label_tag }}
+                        {{ column_form.from_field }}
+                        <small><b>{{ column_form.from_field.errors }}</b></small>
+                    </div>
+                    <div class="to form-group col-md-1" style="display:none;">
+                        {{ column_form.to_field.label_tag }}
+                        {{ column_form.to_field }}
+                        <small><b>{{ column_form.to_field.errors }}</b></small>
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ column_form.order.label_tag }}
+                        {{ column_form.order }}
+                        <small><b>{{ column_form.order.errors }}</b></small>
+                    </div>
+                    <div class="my-3">
+                        <button type="button" class="btn btn-danger mt-3"
+                                id="del_column-__prefix__">{% trans 'Delete column' %}</button>
+                    </div>
+                </div>
+            </div>
+        {% endwith %}
     </div>
 {% endblock content-main %}
 
 {% block includes-js %}
-    <script src="{% static 'csv_generator/js/schema_column_include.js' %}"></script>
+    <script src="{% static 'csv_generator/js/add_column_formset.js' %}"></script>
 {% endblock includes-js %}
