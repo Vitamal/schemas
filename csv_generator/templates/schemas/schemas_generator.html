@@ -44,7 +44,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Download' %}</a>
+                    <a class="mx-3" href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Show' %}</a>
+                    <a class="mx-3" href="{% url 'download' path=generated_scheme.file_name%}">{% translate 'Download' %}</a>
                 </td>
             </tr>
         {% endfor %}
