@@ -52,7 +52,7 @@ def fake_data_generator(num, column_type, from_nam, to_num):
     return item_list
 
 
-@shared_task
+@app.task
 def generator_to_csv(records_number, schema_name, generated_item_id, column_separator, string_character, column_list):
     '''
     create the csv file with fake data
@@ -79,5 +79,5 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
     # updating generated file instance
     generated_item = GeneratedFile.objects.get(id=generated_item_id)
     generated_item.is_generated = True
-    generated_item.file_name=file_name
+    generated_item.file_name = file_name
     generated_item.save()
