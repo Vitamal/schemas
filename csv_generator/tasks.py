@@ -9,8 +9,7 @@ from faker import Faker
 
 from celery import shared_task
 
-from csv_generator.models import GeneratedFile, Schema
-from schemas.celery import app
+from csv_generator.models import GeneratedFile
 from schemas.project.default.settings import MEDIA_ROOT, BASE_DIR
 
 FULL_NAME = 'Full name'
@@ -52,7 +51,7 @@ def fake_data_generator(num, column_type, from_nam, to_num):
     return item_list
 
 
-@app.task
+@shared_task
 def generator_to_csv(records_number, schema_name, generated_item_id, column_separator, string_character, column_list):
     '''
     create the csv file with fake data
