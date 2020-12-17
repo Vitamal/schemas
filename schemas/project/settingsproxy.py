@@ -26,12 +26,12 @@ def _load_develop_environment_from_file():
 
 if DJANGOENV == 'develop':  # Used for local development
     _load_develop_environment_from_file()
-    from schemas.project.develop.develop_settings import *
+    from schemas.project.develop.develop_and_test_settings import *
 elif DJANGOENV == 'test':  # Used when running the Django tests locally
-    from schemas.project.develop.test_settings import *
+    from schemas.project.develop.develop_and_test_settings import *
 elif DJANGOENV == 'staging':  # Used in staging
-    from schemas.project.production.staging_settings import *
+    from schemas.project.production.production_and_staging_settings import *
 elif DJANGOENV == 'production':  # Used in production
-    from schemas.project.production.production_settings import *
+    from schemas.project.production.production_and_staging_settings import *
 else:
     raise ValueError('Invalid value for the DJANGOENV environment variable: {}'.format(DJANGOENV))
