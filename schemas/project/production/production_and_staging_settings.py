@@ -38,7 +38,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = False
 ########################################
 # Cache
 ########################################
-# redis_url = urlparse(os.environ.get('REDIS_URL'))
+redis_url = urlparse(os.environ.get('REDIS_URL'))
 
 # CACHES = {
 #     'default': {
@@ -54,8 +54,8 @@ TEMPLATES[0]['OPTIONS']['debug'] = False
 ########################################
 # Celery
 ########################################
-CELERY_BROKER_URL = os.environ['REDIS_URL']
-CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
+CELERY_BROKER_URL = redis_url
+CELERY_RESULT_BACKEND = redis_url
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
