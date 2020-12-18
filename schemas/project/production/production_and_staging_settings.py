@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from schemas.project.default.settings import *  # noqa
 
 DEBUG = False
@@ -18,7 +20,6 @@ SESSION_COOKIE_SECURE = True
 # Set this to True to avoid transmitting the CSRF cookie over HTTP accidentally.
 CSRF_COOKIE_SECURE = True
 
-
 ###########################
 # Database
 ###########################
@@ -29,13 +30,35 @@ import dj_database_url
 
 DATABASES['default'] = dj_database_url.config()
 
-
 ###########################
 # Templates
 ###########################
 TEMPLATES[0]['OPTIONS']['debug'] = False
 
+########################################
+# Cache
+########################################
+# redis_url = urlparse(os.environ.get('REDIS_URL'))
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'redis_cache.RedisCache',
+#         'LOCATION': f'{redis_url.hostname}:{redis_url.port}',
+#         'OPTIONS': {
+#             'PASSWORD': redis_url.password,
+#             'DB': 0,
+#         }
+#     }
+# }
+
+########################################
+# Celery
+########################################
+CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
 
 LOGGING = {
     'version': 1,
