@@ -40,16 +40,16 @@ TEMPLATES[0]['OPTIONS']['debug'] = False
 ########################################
 redis_url = urlparse(os.environ.get('REDIS_URL'))
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'redis_cache.RedisCache',
-#         'LOCATION': f'{redis_url.hostname}:{redis_url.port}',
-#         'OPTIONS': {
-#             'PASSWORD': redis_url.password,
-#             'DB': 0,
-#         }
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': f'{redis_url.hostname}:{redis_url.port}',
+        'OPTIONS': {
+            'PASSWORD': redis_url.password,
+            'DB': 0,
+        }
+    }
+}
 
 ########################################
 # Celery
