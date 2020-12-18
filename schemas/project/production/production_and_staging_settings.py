@@ -40,7 +40,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = False
 ########################################
 # Cache
 ########################################
-redis_url = redis.from_url(os.environ.get("REDIS_URL"))
+redis_url = urlparse(os.environ.get('REDIS_URL'))
 
 CACHES = {
     'default': {
