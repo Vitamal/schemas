@@ -1,5 +1,7 @@
 from urllib.parse import urlparse
 
+import redis
+
 from schemas.project.default.settings import *  # noqa
 
 DEBUG = False
@@ -38,7 +40,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = False
 ########################################
 # Cache
 ########################################
-redis_url = urlparse(os.environ.get('REDIS_URL'))
+redis_url = redis.from_url(os.environ.get("REDIS_URL"))
 
 CACHES = {
     'default': {
@@ -54,8 +56,8 @@ CACHES = {
 ########################################
 # Celery
 ########################################
-CELERY_BROKER_URL = redis_url
-CELERY_RESULT_BACKEND = redis_url
+CELERY_BROKER_URL =  os.environ['REDIS_URL']
+CELERY_RESULT_BACKEND =  os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
