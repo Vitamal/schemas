@@ -68,6 +68,7 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
     file_name = "{}/{}_{}.csv".format(MEDIA_ROOT, schema_name, timestr)
 
     # make the directory if it isn`t exit
+    print('+++++++++++++++++++++++++++++', BASE_DIR)
     Path("{}/media".format(BASE_DIR)).mkdir(parents=True, exist_ok=True)
 
     with open(file_name, 'w', newline='') as file:
