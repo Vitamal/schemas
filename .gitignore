@@ -24,6 +24,7 @@ node_modules/
 
 # Ignore pycharm files
 .idea/
+.idea
 
 # ignore vscode files
 .vscode/

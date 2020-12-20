@@ -9,8 +9,7 @@ from faker import Faker
 
 from celery import shared_task
 
-from csv_generator.models import GeneratedFile, Schema
-from schemas.celery import app
+from csv_generator.models import GeneratedFile
 from schemas.project.default.settings import MEDIA_ROOT, BASE_DIR
 
 FULL_NAME = 'Full name'
@@ -79,5 +78,5 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
     # updating generated file instance
     generated_item = GeneratedFile.objects.get(id=generated_item_id)
     generated_item.is_generated = True
-    generated_item.file_name=file_name
+    generated_item.file_name = file_name
     generated_item.save()
