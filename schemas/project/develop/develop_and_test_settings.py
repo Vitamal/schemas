@@ -33,3 +33,4 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
 FILE_PATH = MEDIA_ROOT
+BACKEND_STORAGE = 'csv_generator.backends.local_backend'

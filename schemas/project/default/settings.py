@@ -117,10 +117,11 @@ LOGIN_REDIRECT_URL = 'schemas_list'  # URL redirecting after a successful authen
 
 LOGIN_URL = '/login/'
 
-AWS_ACCESS_KEY_ID = 'AKIA24SAGL6FCB2K2SHS'
-AWS_SECRET_ACCESS_KEY = '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'
-S3_BUCKET_NAME = 'testherokuschemas'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+# The AWS S3 ACCESS must be set as an environment variable in prod
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']

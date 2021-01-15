@@ -13,11 +13,6 @@ INSTALLED_APPS += [
 # The SECRET_KEY MUST be set as an environment variable in prod
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-# The AWS S3 ACCESS must be set as an environment variable in prod
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
-
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
@@ -68,6 +63,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
 FILE_PATH = 'http://s3.amazonaws.com/testherokuschemas'
+BACKEND_STORAGE = 'csv_generator.backends.aws_s3_backend'
 
 LOGGING = {
     'version': 1,

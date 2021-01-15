@@ -2,21 +2,17 @@
 the utility to generate fake csv file
 """
 import csv
-import os
+import importlib
 import time
-import boto3
 from pathlib import Path
 
 from faker import Faker
 
 from celery import shared_task
 
+from schemas.project import settingsproxy
 from csv_generator.models import GeneratedFile
-from schemas.project.settingsproxy import FILE_PATH, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME
-
-
-DJANGOENV = os.environ.get('DJANGOENV')
-
+from schemas.project.settingsproxy import FILE_PATH
 
 FULL_NAME = 'Full name'
 JOB = 'Job'
@@ -29,10 +25,6 @@ ADDRESS = 'Address'
 DATE = 'Date'
 
 faker = Faker()
-
-s3 = boto3.client('s3',
-                  aws_access_key_id=AWS_ACCESS_KEY_ID,
-                  aws_secret_access_key=AWS_SECRET_ACCESS_KEY, )
 
 
 def fake_data_generator(num, column_type, from_nam, to_num):
@@ -69,7 +61,6 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
 
     csv.register_dialect('scheme_dialect', delimiter=column_separator, quotechar=string_character)
     column_name_list = [item['column_name'] for item in column_list]
-    column_type_list = [item['type'] for item in column_list]
     list_of_columns = []
     for item in column_list:
         item_list = fake_data_generator(records_number, item['type'], item['from_field'], item['to_field'])
@@ -86,10 +77,9 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
         writer.writerow(column_name_list)
         writer.writerows(data_rows)
 
-    # TODO: is it the good way to do so?
     # upload file to AWS S3
-    if DJANGOENV == 'production':
-        s3.upload_file(file_name, S3_BUCKET_NAME, file_name.split('/')[-1])
+    backend = importlib.import_module(getattr(settingsproxy, 'BACKEND_STORAGE'))
+    backend.upload_file(file_name)
 
     # updating generated_file instance
     generated_item = GeneratedFile.objects.get(id=generated_item_id)
