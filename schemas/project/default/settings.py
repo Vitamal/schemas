@@ -20,11 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+# TODO is it should be hide in heroku (github)?
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 's7$1x1w4d!mj1g6#qu**ky$ynfd*dv)+o)e@tjp2s!h-fu5k20'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -119,7 +117,10 @@ LOGIN_REDIRECT_URL = 'schemas_list'  # URL redirecting after a successful authen
 
 LOGIN_URL = '/login/'
 
+AWS_ACCESS_KEY_ID = 'AKIA24SAGL6FCB2K2SHS'
+AWS_SECRET_ACCESS_KEY = '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'
+S3_BUCKET_NAME = 'testherokuschemas'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
-

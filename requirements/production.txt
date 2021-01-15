@@ -1,4 +1,2 @@
 -r common.txt
-gunicorn==20.0.4
-django-redis-cache==3.0.0
 

@@ -1,6 +1,8 @@
 # Schemas project
 
-Project for creating schemas and generating csv files with fake data according to the schemas  
+Project for creating schemas and generating csv files with fake data according to the schemas.
+Project is accessed in Heroku.com (https://schemas.herokuapp.com/)
+AWS S3 is used to save generated files.
 
 ## Getting Started
 

@@ -5,6 +5,7 @@ from schemas.project.default.settings import *  # noqa
 
 THIS_DIR = os.path.dirname(__file__)
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -30,3 +31,5 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+
+FILE_PATH = MEDIA_ROOT

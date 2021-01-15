@@ -2,7 +2,9 @@
 the utility to generate fake csv file
 """
 import csv
+import os
 import time
+import boto3
 from pathlib import Path
 
 from faker import Faker
@@ -10,7 +12,11 @@ from faker import Faker
 from celery import shared_task
 
 from csv_generator.models import GeneratedFile
-from schemas.project.default.settings import MEDIA_ROOT, BASE_DIR
+from schemas.project.settingsproxy import FILE_PATH, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME
+
+
+DJANGOENV = os.environ.get('DJANGOENV')
+
 
 FULL_NAME = 'Full name'
 JOB = 'Job'
@@ -23,6 +29,10 @@ ADDRESS = 'Address'
 DATE = 'Date'
 
 faker = Faker()
+
+s3 = boto3.client('s3',
+                  aws_access_key_id=AWS_ACCESS_KEY_ID,
+                  aws_secret_access_key=AWS_SECRET_ACCESS_KEY, )
 
 
 def fake_data_generator(num, column_type, from_nam, to_num):
@@ -56,6 +66,7 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
     '''
     create the csv file with fake data
     '''
+
     csv.register_dialect('scheme_dialect', delimiter=column_separator, quotechar=string_character)
     column_name_list = [item['column_name'] for item in column_list]
     column_type_list = [item['type'] for item in column_list]
@@ -65,18 +76,22 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
         list_of_columns.append(item_list)
     data_rows = list(zip(*list_of_columns))
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    file_name = "{}/{}_{}.csv".format(MEDIA_ROOT, schema_name, timestr)
+    file_name = "{}/{}_{}.csv".format(FILE_PATH, schema_name, timestr)
 
     # make the directory if it isn`t exit
-    print('+++++++++++++++++++++++++++++', BASE_DIR)
-    Path("{}/media".format(BASE_DIR)).mkdir(parents=True, exist_ok=True)
+    Path("{}".format(FILE_PATH)).mkdir(parents=True, exist_ok=True)
 
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file, 'scheme_dialect')
         writer.writerow(column_name_list)
         writer.writerows(data_rows)
 
-    # updating generated file instance
+    # TODO: is it the good way to do so?
+    # upload file to AWS S3
+    if DJANGOENV == 'production':
+        s3.upload_file(file_name, S3_BUCKET_NAME, file_name.split('/')[-1])
+
+    # updating generated_file instance
     generated_item = GeneratedFile.objects.get(id=generated_item_id)
     generated_item.is_generated = True
     generated_item.file_name = file_name
