@@ -31,6 +31,3 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-
-FILE_PATH = MEDIA_ROOT
-BACKEND_STORAGE = 'csv_generator.backends.local_backend'

@@ -62,8 +62,6 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-FILE_PATH = 'http://s3.amazonaws.com/testherokuschemas'
-BACKEND_STORAGE = 'csv_generator.backends.aws_s3_backend'
 
 LOGGING = {
     'version': 1,

@@ -14,4 +14,4 @@ class SchemasListView(SchemasAccessMixin, ListView):
     ordering = ['id']
 
     def get_queryset(self):
-        return Schema.objects.filter(created_by=self.request.user)
+        return Schema.objects.filter(created_by=self.request.user).order_by('id')

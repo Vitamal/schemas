@@ -20,7 +20,7 @@ class SchemasToGenerateView(SchemasAccessMixin, ListView):
         return self.kwargs.get('schema_id')
 
     def get_queryset(self):
-        return GeneratedFile.objects.filter(schema=Schema.objects.get(id=self.get_schema_id()))
+        return GeneratedFile.objects.filter(schema=Schema.objects.get(id=self.get_schema_id())).order_by('id')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()

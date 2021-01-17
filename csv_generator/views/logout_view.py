@@ -1,14 +1,12 @@
 from django.contrib.auth import logout
 from django.views.generic import RedirectView
 
-from schemas.project.default.settings import LOGIN_URL
-
 
 class SchemasLogoutView(RedirectView):
     """
     Provides users the ability to logout
     """
-    url = LOGIN_URL
+    url = '/login/'
 
     def get(self, request, *args, **kwargs):
         logout(request)

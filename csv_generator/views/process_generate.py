@@ -1,5 +1,3 @@
-import time
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
