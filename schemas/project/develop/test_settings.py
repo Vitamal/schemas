@@ -1,1 +1,0 @@
-from .develop_settings import *  # noqa

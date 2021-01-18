@@ -1,0 +1,59 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <h2>{% translate 'Data sets' %}</h2>
+        </div>
+        <div class="col-auto">
+            <form action="{% url 'process_generate' %}" method="post">
+                {% csrf_token %}
+                <label for="id_records_num">{% translate 'Rows:' %}</label>
+                <input type="number" max="10000" id="records_num" name="records_number">
+                <input hidden type="number" name="schema_id" value="{{ schema_id }}">
+                <button type="submit" class="btn btn-success">{% translate 'Generate data' %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock header %}
+
+{% block content-main %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% translate 'Created' %}</th>
+            <th scope="col">{% translate 'Status' %}</th>
+            <th scope="col">{% translate 'Action' %}</th>
+        </tr>
+        </thead>
+        <tbody id="mydiv">
+        {% for generated_scheme in generated_files %}
+            <tr>
+                <th scope="row">{{ generated_scheme.id }}</th>
+                <td>{{ generated_scheme.created_datetime }}</td>
+                <td>
+                    {% if generated_scheme.is_generated == False %}
+                        <a href="#" class="btn btn-secondary disabled" role="button"
+                           aria-disabled="true">{% translate 'Proccessing' %}</a>
+                    {% else %}
+                        <a href="#" class="btn btn-success disabled" role="button"
+                           aria-disabled="true">{% translate 'Ready' %}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="mx-3"
+{#                       href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Show' %}</a>#}
+                    {% if  generated_scheme.file_name %}
+                        <a class="mx-3"
+                           href="{% url 'download' path=generated_scheme.file_name %}">{% translate 'Download' %}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content-main %}
+

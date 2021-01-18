@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from csv_generator.models import Schema, SchemaColumn
 
@@ -13,11 +14,11 @@ class SchemaColumnForm(forms.ModelForm):
             'type': forms.Select(
                 attrs={'class': 'form-control', 'required': True}),
             'from_field': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 1000}),
             'to_field': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 1, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 1, 'max_value': 1000}),
             'order': forms.NumberInput(
-                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 100}),
+                attrs={'class': 'form-control', 'required': False, 'min_value': 0, 'max_value': 1000}),
         }
         labels = {
             'name': _('Column Name'),
@@ -38,6 +39,16 @@ class SchemaColumnForm(forms.ModelForm):
 
         if to_field or from_field:
             if not to_field or not from_field or to_field <= from_field:
-                msg = _('The "From:" or "To:" fields is not valid!')
+                msg = _('Field is not valid!')
                 self.add_error('to_field', msg)
                 self.add_error('from_field', msg)
+        return cleaned_data
+
+
+SchemaColumnInlineFormset = inlineformset_factory(
+    Schema,
+    SchemaColumn,
+    form=SchemaColumnForm,
+    extra=0,
+    fields=['name', 'type', 'from_field', 'to_field', 'order'],
+)

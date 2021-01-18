@@ -1,0 +1,20 @@
+{% extends 'navbar_page_template.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <h2>{% translate 'Data schemas' %}</h2>
+        </div>
+        <div class="col-auto">
+            <input type=button class="btn btn-success" value="Back to Data sets" onClick="javascript:history.go(-1);">
+        </div>
+    </div>
+{% endblock header %}
+
+{% block content-main %}
+    <table class="table table-bordered">
+        {{ loaded_data | safe }}
+    </table>
+{% endblock content-main %}

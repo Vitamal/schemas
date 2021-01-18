@@ -5,6 +5,7 @@
 .*.swp
 .*.swo
 *~
+*.csv
 .DS_Store
 *.sqlite
 *.sqlite3
@@ -23,7 +24,9 @@ node_modules/
 
 # Ignore pycharm files
 .idea/
+.idea
 
 # ignore vscode files
 .vscode/
 develop-environment.json
+/csv_generator/migrations/

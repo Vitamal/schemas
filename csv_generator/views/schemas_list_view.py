@@ -1,10 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.views.generic import ListView
 
 from csv_generator.models import Schema
 from csv_generator.views.access_mixin import SchemasAccessMixin
 
-SCHEMAS_LIMIT_PER_PAGE = 20
+SCHEMAS_LIMIT_PER_PAGE =10
 
 
 class SchemasListView(SchemasAccessMixin, ListView):
@@ -15,4 +14,4 @@ class SchemasListView(SchemasAccessMixin, ListView):
     ordering = ['id']
 
     def get_queryset(self):
-        return Schema.objects.filter(created_by=self.request.user)
+        return Schema.objects.filter(created_by=self.request.user).order_by('id')
