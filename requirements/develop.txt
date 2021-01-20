@@ -2,6 +2,7 @@
 
 django-debug-toolbar==2.2
 
+# For database fixture generation
 model-mommy==2.0.0
 
 htmls==1.0.0
