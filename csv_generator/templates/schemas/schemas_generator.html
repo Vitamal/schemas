@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 <label for="id_records_num">{% translate 'Rows:' %}</label>
                 <input type="number" max="10000" id="records_num" name="records_number">
-                <input hidden type="number" name="schema_id" value="{{ schema_id }}">
+                <input hidden id="gen_schema_id" type="number" name="schema_id" value="{{ schema_id }}">
                 <button type="submit" class="btn btn-success">{% translate 'Generate data' %}</button>
             </form>
         </div>
@@ -30,25 +30,26 @@
         </tr>
         </thead>
         <tbody id="mydiv">
-        {% for generated_scheme in generated_files %}
+        {% for generated_file in generated_files %}
             <tr>
-                <th scope="row">{{ generated_scheme.id }}</th>
-                <td>{{ generated_scheme.created_datetime }}</td>
+                <th scope="row">{{ generated_file.id }}</th>
+                <td>{{ generated_file.created_datetime }}</td>
                 <td>
-                    {% if generated_scheme.is_generated == False %}
-                        <a href="#" class="btn btn-secondary disabled" role="button"
-                           aria-disabled="true">{% translate 'Proccessing' %}</a>
+                    {% if generated_file.is_generated == False %}
+                        {{ generated_file.id|json_script:'generated_file_id' }}
+                        <a href="#" id="process_button_{{ generated_file.id }}"  class="btn btn-secondary disabled" role="button"
+                           aria-disabled="true">{% translate 'Processing' %}</a>
                     {% else %}
                         <a href="#" class="btn btn-success disabled" role="button"
                            aria-disabled="true">{% translate 'Ready' %}</a>
                     {% endif %}
                 </td>
                 <td>
-                    <a class="mx-3"
-{#                       href="{% url 'data_view' generated_scheme_id=generated_scheme.id %}">{% translate 'Show' %}</a>#}
-                    {% if  generated_scheme.file_name %}
+{#                    <a class="mx-3"#}
+{#                       href="{% url 'data_view' generated_file_id=generated_file.id %}">{% translate 'Show' %}</a>#}
+                    {% if  generated_file.file_name %}
                         <a class="mx-3"
-                           href="{% url 'download' path=generated_scheme.file_name %}">{% translate 'Download' %}</a>
+                           href="{% url 'download' path=generated_file.file_name %}">{% translate 'Download' %}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -57,3 +58,36 @@
     </table>
 {% endblock content-main %}
 
+{% block includes-js %}
+    <script>
+    // websocket script
+    {#console.log(window.location)#}
+
+    const generated_file_id = JSON.parse(document.getElementById('generated_file_id').textContent);
+    const schemaId = document.getElementById('gen_schema_id').value
+    const button = document.getElementById('process_button' + generated_file_id)
+    const wsStart = window.location.protocol == "https:" ? 'wss://' : 'ws://'
+    const socket = new WebSocket(
+            wsStart
+            + window.location.host
+            + '/ws/generator/'
+            + schemaId
+            + '/'
+        );
+
+    socket.onmessage = function (e) {
+        console.log("message", e)
+    }
+    socket.onopen = function (e) {
+        console.log('button', button)
+        console.log("open", e)
+    }
+    socket.onerror = function (e) {
+        console.log("error", e)
+    }
+    socket.close = function (e){
+        console.log("close", e)
+    }
+
+    </script>
+{% endblock includes-js %}
