@@ -36,8 +36,9 @@
                 <td>{{ generated_file.created_datetime }}</td>
                 <td>
                     {% if generated_file.is_generated == False %}
-                        {{ generated_file.id|json_script:'generated_file_id' }}
-                        <a href="#" id="process_button_{{ generated_file.id }}"  class="btn btn-secondary disabled" role="button"
+                        {#{{ generated_file.id|json_script:'generated_file_id' }}#}
+                        <a href="#" id="process_button_{{ generated_file.id }}" class="btn btn-secondary disabled"
+                           role="button"
                            aria-disabled="true">{% translate 'Processing' %}</a>
                     {% else %}
                         <a href="#" class="btn btn-success disabled" role="button"
@@ -45,8 +46,8 @@
                     {% endif %}
                 </td>
                 <td>
-{#                    <a class="mx-3"#}
-{#                       href="{% url 'data_view' generated_file_id=generated_file.id %}">{% translate 'Show' %}</a>#}
+                    {#                    <a class="mx-3"#}
+                    {#                       href="{% url 'data_view' generated_file_id=generated_file.id %}">{% translate 'Show' %}</a>#}
                     {% if  generated_file.file_name %}
                         <a class="mx-3"
                            href="{% url 'download' path=generated_file.file_name %}">{% translate 'Download' %}</a>
@@ -60,14 +61,14 @@
 
 {% block includes-js %}
     <script>
-    // websocket script
-    {#console.log(window.location)#}
+        // websocket script
+        {#console.log(window.location)#}
 
-    const generated_file_id = JSON.parse(document.getElementById('generated_file_id').textContent);
-    const schemaId = document.getElementById('gen_schema_id').value
-    const button = document.getElementById('process_button' + generated_file_id)
-    const wsStart = window.location.protocol == "https:" ? 'wss://' : 'ws://'
-    const socket = new WebSocket(
+        const schemaId = document.getElementById('gen_schema_id').value
+        const generated_files = document.querySelectorAll('*[id^="process_button_"]');
+        {#const button = document.getElementById('process_button_' + generated_file_id)#}
+        const wsStart = window.location.protocol === "https:" ? 'wss://' : 'ws://'
+        const socket = new WebSocket(
             wsStart
             + window.location.host
             + '/ws/generator/'
@@ -75,19 +76,25 @@
             + '/'
         );
 
-    socket.onmessage = function (e) {
-        console.log("message", e)
-    }
-    socket.onopen = function (e) {
-        console.log('button', button)
-        console.log("open", e)
-    }
-    socket.onerror = function (e) {
-        console.log("error", e)
-    }
-    socket.close = function (e){
-        console.log("close", e)
-    }
+        socket.onmessage = function (e) {
+            let data = JSON.parse(e.data)
+            console.log(data)
+            console.log("message", e)
+        }
+        socket.onopen = function (e) {
+            {#let data = JSON.parse(e.data)#}
+            console.log("data: ", e.data);
+            console.log('generated_files', generated_files)
+            console.log('generated_file', generated_files[0].id)
+            console.log('generated_file #', generated_files[0].id.substring(15))
+            console.log("open", e)
+        }
+        socket.onerror = function (e) {
+            console.log("error", e)
+        }
+        socket.close = function (e) {
+            console.log("close", e)
+        }
 
     </script>
 {% endblock includes-js %}
