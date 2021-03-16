@@ -72,6 +72,15 @@ WSGI_APPLICATION = 'schemas.wsgi.application'
 
 ASGI_APPLICATION = "schemas.asgi.application"
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL', ('flexitkt_redis_1', 6379))],
+        },
+    },
+}
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 

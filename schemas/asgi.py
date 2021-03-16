@@ -19,8 +19,11 @@ import csv_generator.routing
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'schemas.project.settingsproxy')
 
 application = ProtocolTypeRouter({
-  "http": get_asgi_application(),
-  "websocket": AuthMiddlewareStack(
+    # Django's ASGI application to handle traditional HTTP requests
+    "http": get_asgi_application(),
+
+    # WebSocket chat handler
+    "websocket": AuthMiddlewareStack(
         URLRouter(
             csv_generator.routing.websocket_urlpatterns
         )
