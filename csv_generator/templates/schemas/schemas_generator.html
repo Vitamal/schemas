@@ -41,7 +41,7 @@
                            role="button"
                            aria-disabled="true">{% translate 'Processing' %}</a>
                     {% else %}
-                        <a href="#" class="btn btn-success disabled" role="button"
+                        <a href="#" id="ready_button_{{ generated_file.id }}" class="btn btn-success disabled" role="button"
                            aria-disabled="true">{% translate 'Ready' %}</a>
                     {% endif %}
                 </td>
@@ -57,6 +57,8 @@
         {% endfor %}
         </tbody>
     </table>
+    <a href="#" id="log-button" class="btn btn-secondary " role="button">{% translate 'Log' %}</a>
+    <textarea id="log" cols="100" rows="2"></textarea><br>
 {% endblock content-main %}
 
 {% block includes-js %}
@@ -66,7 +68,7 @@
 
         const schemaId = document.getElementById('gen_schema_id').value
         const generated_files = document.querySelectorAll('*[id^="process_button_"]');
-        {#const button = document.getElementById('process_button_' + generated_file_id)#}
+        const ready_file = document.querySelectorAll('*[id^="ready_button_"]');
         const wsStart = window.location.protocol === "https:" ? 'wss://' : 'ws://'
         const socket = new WebSocket(
             wsStart
@@ -77,24 +79,30 @@
         );
 
         socket.onmessage = function (e) {
-            let data = JSON.parse(e.data)
+            const data = JSON.parse(e.data)
+            document.querySelector('#log').value += data.message;
             console.log(data)
             console.log("message", e)
         }
-        socket.onopen = function (e) {
-            {#let data = JSON.parse(e.data)#}
-            console.log("data: ", e.data);
-            console.log('generated_files', generated_files)
-            console.log('generated_file', generated_files[0].id)
-            console.log('generated_file #', generated_files[0].id.substring(15))
-            console.log("open", e)
-        }
+
         socket.onerror = function (e) {
-            console.log("error", e)
+            console.log("error", e);
         }
+
         socket.close = function (e) {
-            console.log("close", e)
+            console.error('Chat socket closed unexpectedly');
         }
+
+        let processingButtonIds = []
+        ready_file.forEach(function (item){
+            processingButtonIds.push(parseInt(item.id.slice(13,)))
+        })
+        processingFileIds = JSON.stringify(processingButtonIds);
+        document.querySelector('#log-button').focus();
+        document.querySelector('#log-button').onclick = function(e) {
+            socket.send(JSON.stringify({
+                'message': processingFileIds
+            }))};
 
     </script>
 {% endblock includes-js %}

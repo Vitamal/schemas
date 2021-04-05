@@ -1,3 +1,7 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save)
 def generated_file_status_changed(sender, **kwargs):
     instance = kwargs.get('instance')
     created = kwargs.get('created')
