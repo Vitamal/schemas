@@ -32,5 +32,5 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-REDIS_HOST = 'schemas_1'
+REDIS_HOST = 'localhost'
 REDIS_PORT = 6379

@@ -80,7 +80,7 @@
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data)
-            document.querySelector('#log').value += data.message;
+            document.querySelector('#log').value += data['generated_file_id'];
             console.log(data)
             console.log("message", e)
         }
@@ -101,7 +101,7 @@
         document.querySelector('#log-button').focus();
         document.querySelector('#log-button').onclick = function(e) {
             socket.send(JSON.stringify({
-                'message': processingFileIds
+                'generated_file_id': processingFileIds
             }))};
 
     </script>
