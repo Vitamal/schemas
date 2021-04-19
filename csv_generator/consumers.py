@@ -25,7 +25,6 @@ class SchemasConsumer(WebsocketConsumer):
         )
         self.accept()
 
-
     # def disconnect(self, close_code):
     #     pass
 
@@ -36,7 +35,6 @@ class SchemasConsumer(WebsocketConsumer):
     #     self.send(text_data=json.dumps({
     #         'message': message
     #     }))
-
 
     def disconnect(self, close_code):
         # Leave room group
@@ -52,22 +50,31 @@ class SchemasConsumer(WebsocketConsumer):
         print('8888888888888888', text_data)
         print('self.group_name,', self.group_name)
 
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.group_name,
-            {
-                'type': 'pr_status_message',
-                'generated_file_id': generated_file_id,
-            }
-        )
+        # # Send message to room group
+        # async_to_sync(self.channel_layer.group_send)(
+        #     self.group_name,
+        #     {
+        #         'type': 'pr_status_message',
+        #         'generated_file_id': generated_file_id,
+        #     }
+        # )
 
     # Receive message from room group
-    def pr_status_message(self, event):
-        generated_file_id = event['generated_file_id']
-        generated_file_status = event['generated_file_status']
+    def task_message(self, event):
+        message = event['message']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'generated_file_id': generated_file_id,
-             'generated_file_status': generated_file_status
+            'message': message
         }))
+
+    # # Receive message from room group
+    # def pr_status_message(self, event):
+    #     generated_file_id = event['generated_file_id']
+    #     generated_file_status = event['generated_file_status']
+    #
+    #     # Send message to WebSocket
+    #     self.send(text_data=json.dumps({
+    #         'generated_file_id': generated_file_id,
+    #          'generated_file_status': generated_file_status
+    #     }))

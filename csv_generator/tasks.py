@@ -93,3 +93,15 @@ def generator_to_csv(records_number, schema_name, generated_item_id, column_sepa
     generated_item.is_generated = True
     generated_item.file_name = file_name
     generated_item.save()
+
+    result = {
+        'generated_file_id': generated_item.id
+    }
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        'generator',
+        {
+            'type': 'task_message',
+            'message': result
+        }
+    )

@@ -79,8 +79,10 @@
         );
 
         socket.onmessage = function (e) {
+            console.log("Got message: " + e.data);
             const data = JSON.parse(e.data)
-            document.querySelector('#log').value += data['generated_file_id'];
+            {#document.querySelector('#log').value += data['generated_file_id'];#}
+            document.querySelector('#log').value += data['message'];
             console.log(data)
             console.log("message", e)
         }
