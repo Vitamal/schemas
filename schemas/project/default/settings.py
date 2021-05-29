@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 # TODO is it should be hide in heroku (github)?
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 's7$1x1w4d!mj1g6#qu**ky$ynfd*dv)+o)e@tjp2s!h-fu5k20'
+#SECRET_KEY = 's7$1x1w4d!mj1g6#qu**ky$ynfd*dv)+o)e@tjp2s!h-fu5k20'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default')
 
 ALLOWED_HOSTS = []
 

@@ -1,0 +1,31 @@
+version: "3.0"
+
+services:
+  db:
+    image: postgres:12.1-alpine
+    container_name: db
+    hostname: db
+    restart: always
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    env_file:
+      - ./docker/environments
+  redis:
+    image: redis:6
+    hostname: redis
+    ports:
+      - "6379:6379"
+  web:
+    build: .
+    container_name: web
+    hostname: web
+    command: sh ./docker/start.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./docker/environments
